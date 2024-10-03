@@ -51,7 +51,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="footer-link"
         >
-         Matt Keeney's GitHub
+         Matt's GitHub
         </a>
       </div>
       <p className="footer-text">&copy; {new Date().getFullYear()} Coding better than yesterday</p>
