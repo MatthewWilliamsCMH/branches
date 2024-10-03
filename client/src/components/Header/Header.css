@@ -1,0 +1,34 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #282c34;
+    color: white; 
+    padding: 15px 30px; 
+    position: fixed;
+    width: 100%; 
+    z-index: 1000;
+  }
+
+  .header img {
+    width: 50px; 
+    height: auto;
+    margin-right: 15px; 
+}
+
+.header div {
+    font-size: 24px; 
+    font-weight: bold; 
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column; /* Stack items on smaller screens */
+        align-items: flex-start; /* Align items to the left */
+    }
+}
+
+.header div:hover {
+    color: #007BFF; /* Change text color on hover */
+    cursor: pointer; /* Change cursor on hover */
+}
