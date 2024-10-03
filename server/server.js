@@ -1,13 +1,36 @@
+require('dotenv').config(); // Load environment variables
 const express = require('express');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 
+// Initialize Express
 const app = express();
-app.use(bodyParser.json());
+const PORT = process.env.PORT || 3000;
+const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key'; // Store secret in environment variables
 
-const users = []; // Temporary in-memory storage for users. Use a database in production.
-const SECRET_KEY = 'your_secret_key'; // In production, use a more secure secret and store it in environment variables.
+// Middleware
+app.use(bodyParser.json()); // Use body-parser to parse JSON
+app.use(express.json()); // Parse JSON request bodies
+
+// MongoDB Connection
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/genealogyDB';
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+mongoose.connection.on('connected', () => {
+  console.log('Connected to MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log(`Error connecting to MongoDB: ${err}`);
+});
+
+// Temporary in-memory storage for users (Replace with MongoDB collection in production)
+const users = [];
 
 // Middleware to protect routes
 const authenticateToken = (req, res, next) => {
@@ -60,7 +83,12 @@ app.get('/protected', authenticateToken, (req, res) => {
   res.json({ message: `Welcome, ${req.user.name}! This is a protected route.` });
 });
 
+// Example Route for MongoDB
+app.get('/', (req, res) => {
+  res.send('Welcome to the Genealogy API!');
+});
+
 // Start the server
-app.listen(3000, () => {
-  console.log('Server running on http://localhost:3000');
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
