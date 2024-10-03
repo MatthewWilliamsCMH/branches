@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "seed": "node seeds/seed.js",
+    "seed": "node seed/seed.js",
     "watch": "nodemon server.js"
   },
   "author": "",
@@ -15,7 +15,7 @@
     "express": "^4.17.2",
     "graphql": "^16.6.0",
     "mongoose": "^8.0.0",
-    "env": "0.0.2"
+    "dotenv": "16.4.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
