@@ -78,11 +78,6 @@ const resolvers = {
       }
     },
   },
-  
-  // Optional: Field-level resolvers (if needed)
-  // Since your current schema doesn't have nested fields or relationships,
-  // you might not need additional field resolvers. However, if you add
-  // relationships in the future, you can define resolvers here.
 };
 
 module.exports = resolvers;

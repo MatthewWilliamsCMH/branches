@@ -2,6 +2,9 @@
 require('dotenv').config(); // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
+const { ApolloServer } = require('apollo-server-express'); // Import Apollo Server
+const typeDefs = require('./schemas/typeDefs'); // Import your type definitions
+const resolvers = require('./schemas/resolvers'); // Import your resolvers
 
 // Initialize Express
 const app = express();
@@ -25,17 +28,19 @@ mongoose.connection.on('error', (err) => {
   console.log(`Error connecting to MongoDB: ${err}`);
 });
 
-// Example Route (replace with your actual API routes)
-app.get('/', (req, res) => {
-  res.send('Welcome to the Genealogy API!');
-});
+// Initialize Apollo Server
+const server = new ApolloServer({ typeDefs, resolvers });
 
-// Define your routes (e.g., routes for Person model)
-// Example route file (assuming you have a routes folder)
-// const personRoutes = require('./routes/personRoutes');
-// app.use('/api/persons', personRoutes);
+// Apply middleware to the Express app
+server.applyMiddleware({ app });
+
+// Example Route (can be removed if using only GraphQL)
+app.get('/', (req, res) => {
+  res.send('Welcome to the Genealogy API! Use GraphQL at /graphql');
+});
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 GraphQL server ready at http://localhost:${PORT}${server.graphqlPath}`);
 });
