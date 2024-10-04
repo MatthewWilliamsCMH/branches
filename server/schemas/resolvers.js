@@ -40,6 +40,7 @@ const resolvers = {
           gender: args.gender,
           birthPlace: args.birthPlace,
           burialSite: args.burialSite,
+          img: args.img, // Include img field
         });
         const savedPerson = await newPerson.save();
         return savedPerson;
@@ -52,7 +53,8 @@ const resolvers = {
     updatePerson: async (_, args) => {
       try {
         const { id, ...updateData } = args;
-        const updatedPerson = await Person.findByIdAndUpdate(id, updateData, {
+        // Include img field in the update data if it exists
+        const updatedPerson = await Person.findByIdAndUpdate(id, { ...updateData, img: args.img }, {
           new: true, // Return the updated document
           runValidators: true, // Ensure updated data adheres to schema
         });

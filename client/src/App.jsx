@@ -1,33 +1,52 @@
 import './App.css';
-import { Outlet } from 'react-router-dom';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import React, { Component } from 'react';
+import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql } from '@apollo/client';
+import React from 'react';
 import FamilyTree from './components/Tree/mytree';
 
+// Define the Apollo Client
 const client = new ApolloClient({
   uri: '/graphql',
   cache: new InMemoryCache(),
 });
 
+// Define the GET_PERSONS query
+const GET_PERSONS = gql`
+  query GetPersons {
+    persons {
+      id
+      firstName
+      lastName
+      gender
+      img
+    }
+  }
+`;
+
+// Create a separate component for querying and displaying data
+function Persons() {
+  const { loading, error, data } = useQuery(GET_PERSONS);
+
+  // Handle loading and error states
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  // Map the fetched data to the format required by the FamilyTree component
+  const nodes = data.persons.map(person => ({
+    id: person.id,
+    pids: [], // Update as necessary, based on your family tree structure
+    name: `${person.firstName} ${person.lastName}`,
+    gender: person.gender,
+    img: person.img || 'https://example.com/default-image.jpg', // Use the person's image or provide a default
+  }));
+
+  return <FamilyTree nodes={nodes} />;
+}
+
 function App() {
-  const nodes = [
-    { id: 1, pids: [2], name: 'Amber McKenzie', gender: 'female', img: 'https://cdn.balkan.app/shared/2.jpg' },
-    //objects get inserted here?
-];
   return (
-    <ApolloProvider client={client} style = {{height: '100%'}}>
-      <div className="flex-column justify-center align-center min-100-vh bg-primary" style = {{height: "100%"}}>
-        {/*This block is sample data, not real */}
-          <FamilyTree nodes={[
-            { id: 1, pids: [2], name: 'Amber McKenzie', gender: 'female', img: 'https://cdn.balkan.app/shared/2.jpg'  },
-            { id: 2, pids: [1], name: 'Ava Field', gender: 'male', img: 'https://cdn.balkan.app/shared/m30/5.jpg' },
-            { id: 3, mid: 1, fid: 2, name: 'Peter Stevens', gender: 'male', img: 'https://cdn.balkan.app/shared/m10/2.jpg' },
-            { id: 4, mid: 1, fid: 2, name: 'Savin Stevens', gender: 'male', img: 'https://cdn.balkan.app/shared/m10/1.jpg'  },
-            { id: 5, mid: 1, fid: 2, name: 'Emma Stevens', gender: 'female', img: 'https://cdn.balkan.app/shared/w10/3.jpg' }
-            ]} />
-        {/*end of sample data */}
-        <FamilyTree nodes = {nodes} />
-        {/* <Outlet /> */} {/* I this is replaced by the line above */}
+    <ApolloProvider client={client} style={{ height: '100%' }}>
+      <div className="flex-column justify-center align-center min-100-vh bg-primary" style={{ height: "100%" }}>
+        <Persons /> {/* Render the Persons component here */}
       </div>
     </ApolloProvider>
   );
