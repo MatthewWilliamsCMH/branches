@@ -47,6 +47,7 @@ function App() {
     <ApolloProvider client={client} style={{ height: '100%' }}>
       <div className="flex-column justify-center align-center min-100-vh bg-primary" style={{ height: "100%" }}>
         <Persons /> {/* Render the Persons component here */}
+
       </div>
     </ApolloProvider>
   );
