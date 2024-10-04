@@ -1,6 +1,9 @@
 require('dotenv').config(); // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
+const { ApolloServer } = require('apollo-server-express'); // Import ApolloServer
+const typeDefs = require('./schemas/typeDefs'); // Import typeDefs
+const resolvers = require('./schemas/resolvers'); // Import resolvers
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
@@ -83,12 +86,26 @@ app.get('/protected', authenticateToken, (req, res) => {
   res.json({ message: `Welcome, ${req.user.name}! This is a protected route.` });
 });
 
-// Example Route for MongoDB
-app.get('/', (req, res) => {
-  res.send('Welcome to the Genealogy API!');
+// Create an Apollo Server instance
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Start the Apollo Server and apply middleware
+const startServer = async () => {
+  await server.start(); // Wait for the server to start
+  server.applyMiddleware({ app }); // Apply middleware to the Express app
+
+  // Example Route (replace with your actual API routes)
+  app.get('/', (req, res) => {
+    res.send('Welcome to the Genealogy API!');
+  });
+
+  // Start the server
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}${server.graphqlPath}`); // Log the GraphQL endpoint
+  });
+};
+
+startServer(); // Call the startServer function
