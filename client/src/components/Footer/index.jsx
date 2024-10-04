@@ -14,7 +14,7 @@ const Footer = () => {
          Brad's GitHub
         </a>
         <a
-          href="https://github.com/mkeeney42?tab=repositories"
+          href="https://github.com/jameswhatcott"
           target="_blank"
           rel="noopener noreferrer"
           className="footer-link"
@@ -22,7 +22,7 @@ const Footer = () => {
          James's GitHub
         </a>
         <a
-          href="https://github.com/mkeeney42?tab=repositories"
+          href="https://github.com/MatthewWilliamsCMH"
           target="_blank"
           rel="noopener noreferrer"
           className="footer-link"
@@ -30,7 +30,7 @@ const Footer = () => {
          Matthews's GitHub
         </a>
         <a
-          href="https://github.com/mkeeney42?tab=repositories"
+          href="https://github.com/Bluf00"
           target="_blank"
           rel="noopener noreferrer"
           className="footer-link"
