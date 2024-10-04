@@ -11,11 +11,10 @@ const client = new ApolloClient({
 
 function App() {
   const nodes = [
-    { id: 1, pids: [2], name: 'Amber McKenzie', gender: 'female', img: 'https://cdn.balkan.app/shared/2.jpg' },
-    //objects get inserted here?
+    // { id: 1, pids: [2], name: 'Amber McKenzie', gender: 'female', img: 'https://cdn.balkan.app/shared/2.jpg' },
 ];
   return (
-    <ApolloProvider client={client} style = {{height: '100%'}}>
+    <ApolloProvider client={client}>
       <div className="flex-column justify-center align-center min-100-vh bg-primary" style = {{height: "100%"}}>
         {/*This block is sample data, not real */}
           <FamilyTree nodes={[
