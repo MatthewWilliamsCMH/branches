@@ -12,7 +12,7 @@ const Tree = ({ nodes }) => {
                 img_0: 'img'
             }
         });
-
+console.log(family)
         // Clean up function if needed
         return () => {
             // If FamilyTree has a method to destroy or clean up, call it here
