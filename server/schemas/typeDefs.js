@@ -12,6 +12,7 @@ const typeDefs = gql`
     gender: String!
     birthPlace: String!
     burialSite: String!
+    img: String # Add the img field here
   }
 
   type Query {
@@ -29,6 +30,7 @@ const typeDefs = gql`
       gender: String!
       birthPlace: String!
       burialSite: String!
+      img: String # Include img field in the addPerson mutation
     ): Person
 
     updatePerson(
@@ -41,6 +43,7 @@ const typeDefs = gql`
       gender: String
       birthPlace: String
       burialSite: String
+      img: String # Include img field in the updatePerson mutation
     ): Person
 
     deletePerson(id: ID!): Person
