@@ -1,6 +1,6 @@
 import React from 'react';
 import image1 from '../../assets/Tree.png'
-import styles from "./Header.css"
+import "./Header.css"
 
 
 
