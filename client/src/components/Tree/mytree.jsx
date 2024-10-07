@@ -26,28 +26,28 @@ const Tree = ({ nodes }) => {
                 img_0: 'img'
             },
             nodeCircleMenu: {
-                PDFProfile: {
-                    icon: FamilyTree.icon.pdf(30, 30, '#aeaeae'),
-                    text: "PDF Profile",
-                    color: "white"
-                },
+                // PDFProfile: {
+                //     icon: FamilyTree.icon.pdf(30, 30, '#aeaeae'),
+                //     text: "PDF Profile",
+                //     color: "white"
+                // },
         
                 editNode: {
                     icon: FamilyTree.icon.edit(30, 30, '#aeaeae'),
                     text: "Edit node",
                     color: "white"
                 },
-                addClink: {
-                    icon: FamilyTree.icon.link(30, 30, '#aeaeae'),
-                    text: "Add C link",
-                    color: '#fff',
-                    draggable: true
-                },
-                pet: {
-                    icon: FamilyTree.icon.teddy(30, 30, '#aeaeae'),
-                    text: "Add pet",
-                    color: "white"
-                }
+                // addClink: {
+                //     icon: FamilyTree.icon.link(30, 30, '#aeaeae'),
+                //     text: "Add C link",
+                //     color: '#fff',
+                //     draggable: true
+                // },
+                // pet: {
+                //     icon: FamilyTree.icon.teddy(30, 30, '#aeaeae'),
+                //     text: "Add pet",
+                //     color: "white"
+                // }
             },
         });
 
@@ -72,7 +72,7 @@ const Tree = ({ nodes }) => {
                     color: "white"
                 };
             }
-            if (node.gender == 'male') {
+            if (node.gender == 'male' ) {
                 args.menu.wife = {
                     icon: FamilyTree.icon.wife(30, 30, '#F57C00'),
                     text: "Add wife",
