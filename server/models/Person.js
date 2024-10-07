@@ -11,7 +11,8 @@ const PersonSchema = new Schema({
   gender: { type: String, required: true },
   birthPlace: { type: String, required: true },
   burialSite: { type: String },
-  parents: [{ type: Schema.Types.ObjectId, ref: 'Person' }] // Changed to array of ObjectId references
+  motherId: { type: Schema.Types.ObjectId, ref: 'Person' }, // Reference to another Person document
+  fatherId: { type: Schema.Types.ObjectId, ref: 'Person' }, // Reference to another Person document
 }, {
   timestamps: true
 });
