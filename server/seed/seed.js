@@ -41,7 +41,9 @@ async function seedDatabase() {
       gender: 'Male',
       birthPlace: 'London, UK',
       burialSite: 'Highgate Cemetery',
-      parents: [] // No parents in the earliest generation
+      // No parents
+      motherId: null,
+      fatherId: null
     });
 
     const ggGrandmother = await createPerson({
@@ -53,7 +55,9 @@ async function seedDatabase() {
       gender: 'Female',
       birthPlace: 'Manchester, UK',
       burialSite: 'Highgate Cemetery',
-      parents: [] // No parents in the earliest generation
+      // No parents
+      motherId: null,
+      fatherId: null
     });
 
     // Generation 2: Great-Grandparents
@@ -66,7 +70,8 @@ async function seedDatabase() {
       gender: 'Male',
       birthPlace: 'Bristol, UK',
       burialSite: 'Highgate Cemetery',
-      parents: [ggGrandfather._id, ggGrandmother._id]
+      fatherId: ggGrandfather._id, // Father's father
+      motherId: ggGrandmother._id  // Father's mother
     });
 
     const gGrandmother = await createPerson({
@@ -78,7 +83,8 @@ async function seedDatabase() {
       gender: 'Female',
       birthPlace: 'Bristol, UK',
       burialSite: 'Highgate Cemetery',
-      parents: [ggGrandfather._id, ggGrandmother._id]
+      fatherId: ggGrandfather._id, // Mother's father
+      motherId: ggGrandmother._id  // Mother's mother
     });
 
     // Generation 3: Grandparents
@@ -91,7 +97,8 @@ async function seedDatabase() {
       gender: 'Male',
       birthPlace: 'London, UK',
       burialSite: 'Highgate Cemetery',
-      parents: [gGrandfather._id, gGrandmother._id]
+      fatherId: gGrandfather._id, // Father's father
+      motherId: gGrandmother._id  // Father's mother
     });
 
     const grandmother = await createPerson({
@@ -103,7 +110,8 @@ async function seedDatabase() {
       gender: 'Female',
       birthPlace: 'London, UK',
       burialSite: 'Highgate Cemetery',
-      parents: [gGrandfather._id, gGrandmother._id]
+      fatherId: gGrandfather._id, // Mother's father
+      motherId: gGrandmother._id  // Mother's mother
     });
 
     // Generation 4: Parents
@@ -116,7 +124,8 @@ async function seedDatabase() {
       gender: 'Male',
       birthPlace: 'London, UK',
       burialSite: '',
-      parents: [grandfather._id, grandmother._id]
+      fatherId: grandfather._id, // Father's father
+      motherId: grandmother._id  // Father's mother
     });
 
     const mother = await createPerson({
@@ -128,7 +137,8 @@ async function seedDatabase() {
       gender: 'Female',
       birthPlace: 'London, UK',
       burialSite: '',
-      parents: [] // Assuming no data for mother's parents
+      fatherId: null, // Assuming no data for mother's father
+      motherId: null  // Assuming no data for mother's mother
     });
 
     // Generation 5: Children
@@ -141,7 +151,8 @@ async function seedDatabase() {
       gender: 'Female',
       birthPlace: 'London, UK',
       burialSite: '',
-      parents: [father._id, mother._id]
+      fatherId: father._id,
+      motherId: mother._id
     });
 
     const child2 = await createPerson({
@@ -153,7 +164,8 @@ async function seedDatabase() {
       gender: 'Male',
       birthPlace: 'London, UK',
       burialSite: '',
-      parents: [father._id, mother._id]
+      fatherId: father._id,
+      motherId: mother._id
     });
 
     console.log('Database seeded successfully!');
