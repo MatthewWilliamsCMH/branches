@@ -1,5 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import FamilyTree from "@balkangraph/familytree.js";
+import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
+
+// FamilyTree.templates.tommy.nodeCircleMenuButton = FamilyTree.templates.tommy_female.nodeCircleMenuButton = FamilyTree.templates.tommy_male.nodeCircleMenuButton = {
+//     radius: 25,
+//     x: 230,
+//     y: 60,
+//     color: '#fff',
+//     stroke: '#aeaeae'
+// };
 
 const Tree = ({ nodes }) => {
     const divRef = useRef(null);
@@ -7,18 +15,37 @@ const Tree = ({ nodes }) => {
     useEffect(() => {
         const family = new FamilyTree(divRef.current, {
             nodes: nodes,
+            mode: 'dark',
+            template: 'tommy',
+            nodeTreeMenu: true,
             nodeBinding: {
                 field_0: 'name',
                 img_0: 'img'
-            }
+            },
+           /* nodeCircleMenu: {
+                editNode: {
+                    icon: FamilyTree.icon.edit(30, 30, '#aeaeae'),
+                    text: "Edit node",
+                    color: "white"
+                },
+                addSon: {
+                    icon: FamilyTree.icon.son(30, 30, '#039BE5'),
+                    text: "Add son",
+                    color: "white"
+                },
+                addDaughter: {
+                    icon: FamilyTree.icon.daughter(30, 30, '#F57C00'),
+                    text: "Add daughter",
+                    color: "white"
+                }
+            } */
         });
-console.log(family)
+
         // Clean up function if needed
         return () => {
-            // If FamilyTree has a method to destroy or clean up, call it here
-            // family.clear(); // Example, if such method exists
+            // Clean up logic here if necessary
         };
-    }, [nodes]); // Run effect when nodes change
+    }, [nodes]);
 
     return (
         <div id="tree" ref={divRef}></div>
