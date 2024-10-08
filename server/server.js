@@ -1,111 +1,100 @@
-require('dotenv').config(); // Load environment variables
 const express = require('express');
-const mongoose = require('mongoose');
-const { ApolloServer } = require('apollo-server-express'); // Import ApolloServer
-const typeDefs = require('./schemas/typeDefs'); // Import typeDefs
-const resolvers = require('./schemas/resolvers'); // Import resolvers
-const bcrypt = require('bcryptjs');
+const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
+const path = require('path');
 const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+const { typeDefs, resolvers } = require('./schemas');
+const db = require('./config/connection');
+const User = require('./models/User'); // Adjust path as per your structure
 
-// Initialize Express
+const { typeDefs, resolvers } = require('./schemas');
+const db = require('./config/connection');
+
+const PORT = process.env.PORT || 3001;
 const app = express();
-const PORT = process.env.PORT || 3000;
-const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key'; // Store secret in environment variables
-
-// Middleware
-app.use(bodyParser.json()); // Use body-parser to parse JSON
-app.use(express.json()); // Parse JSON request bodies
-
-// MongoDB Connection
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/genealogyDB';
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB');
-});
-
-mongoose.connection.on('error', (err) => {
-  console.log(`Error connecting to MongoDB: ${err}`);
-});
-
-// Temporary in-memory storage for users (Replace with MongoDB collection in production)
-const users = [];
-
-// Middleware to protect routes
-const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization'];
-  
-  if (!token) return res.status(403).json({ message: 'Token is required' });
-
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) return res.status(403).json({ message: 'Invalid token' });
-    
-    req.user = user; // Save the user data in the request
-    next(); // Proceed to the next middleware or route handler
-  });
-};
-
-// Sign-up Route
-app.post('/signup', (req, res) => {
-  const { name, email, password } = req.body;
-
-  // Check if user already exists
-  const userExists = users.find(user => user.email === email);
-  if (userExists) return res.status(400).json({ message: 'User already exists' });
-
-  // Hash the password and store the new user
-  const hashedPassword = bcrypt.hashSync(password, 8);
-  users.push({ name, email, password: hashedPassword });
-
-  res.status(201).json({ message: 'User registered successfully' });
-});
-
-// Login Route
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-
-  // Find user in "database"
-  const user = users.find(user => user.email === email);
-  if (!user) return res.status(400).json({ message: 'User not found' });
-
-  // Compare password
-  const isMatch = bcrypt.compareSync(password, user.password);
-  if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
-
-  // Generate JWT
-  const token = jwt.sign({ id: user.email, name: user.name }, SECRET_KEY, { expiresIn: '1h' });
-  res.json({ message: 'Login successful', token });
-});
-
-// Protected Route (requires JWT)
-app.get('/protected', authenticateToken, (req, res) => {
-  res.json({ message: `Welcome, ${req.user.name}! This is a protected route.` });
-});
-
-// Create an Apollo Server instance
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
-// Start the Apollo Server and apply middleware
-const startServer = async () => {
-  await server.start(); // Wait for the server to start
-  server.applyMiddleware({ app }); // Apply middleware to the Express app
+const authenticateJWT = (req, res, next) => {
+  const token = req.headers['authorization'];
 
-  // Example Route (replace with your actual API routes)
-  app.get('/', (req, res) => {
-    res.send('Welcome to the Genealogy API!');
-  });
+  if (!token) {
+    return res.status(401).json({ message: 'Access Token Required' });
+  }
 
-  // Start the server
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}${server.graphqlPath}`); // Log the GraphQL endpoint
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid Token' });
+    }
+
+    req.user = user;
+    next();
   });
 };
 
-startServer(); // Call the startServer function
+const startApolloServer = async () => {
+  await server.start();
+  
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
+  
+  app.use('/graphql', expressMiddleware(server));
+
+  //
+
+  app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+      // Find user in the database
+      const user = await User.findOne({ where: { email } });
+
+      if (!user) {
+        return res.status(400).json({ message: 'User not found' });
+      }
+
+      // Check if the password is correct
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      
+      if (!isPasswordValid) {
+        return res.status(400).json({ message: 'Invalid password' });
+      }
+
+      // Generate JWT token
+      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+
+      // Send the token back to the client
+      res.json({ token });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+
+  // Protected route example
+  app.get('/protected', authenticateJWT, (req, res) => {
+    res.json({ message: 'You have access to this protected route', user: req.user });
+  });
+
+
+  // if we're in production, serve client/dist as static assets
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    });
+  } 
+
+  db.once('open', () => {
+    app.listen(PORT, () => {
+      console.log(`API server running on port ${PORT}!`);
+      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    });
+  });
+};
+
+startApolloServer();
