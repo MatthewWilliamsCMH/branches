@@ -23,9 +23,8 @@ const Tree = ({ nodes }) => {
                 img_0: 'img'
             },
             editForm: {
-                // titleBinding: `${firstName} ${middleName} ${lastName}`,
                 titleBinding: "name",
-                photoBinding: "photo",
+                photoBinding: "img",
                 // generateElementsFromFields: false,
                 // addMore: 'Add more elements',
                 // addMoreBtn: 'Add element',
@@ -45,7 +44,7 @@ const Tree = ({ nodes }) => {
                     //     { type: 'select', options: [{ value: 'bg', text: 'Bulgaria' }, { value: 'ru', text: 'Russia' }, { value: 'gr', text: 'Greece' }], label: 'Country', binding: 'country' },
                     //     { type: 'textbox', label: 'City', binding: 'city' },
                     // ],
-                    { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl' } //, btn: 'Upload' },
+            { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' },
                     // { type: 'textbox', label: 'Phone', binding: 'Mobile' },
                 ],
                 buttons: {
