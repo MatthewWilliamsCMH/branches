@@ -1,4 +1,4 @@
-// seed/seed.js
+// server/seed/seed.js
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -36,28 +36,28 @@ async function seedDatabase() {
       firstName: 'Edward',
       middleName: 'Henry',
       lastName: 'Brown',
-      dateOfBirth: new Date('1900-01-15'),
-      dateOfDeath: new Date('1970-05-20'),
+      dateOfBirth: '1900-01-15',
+      dateOfDeath: '1970-05-20',
       gender: 'Male',
       birthPlace: 'London, UK',
       burialSite: 'Highgate Cemetery',
-      // No parents
-      motherId: null,
-      fatherId: null
+      img: 'https://example.com/edward.jpg',
+      fatherId: null,
+      motherId: null
     });
 
     const ggGrandmother = await createPerson({
       firstName: 'Elizabeth',
       middleName: 'Anne',
       lastName: 'Brown',
-      dateOfBirth: new Date('1902-03-22'),
-      dateOfDeath: new Date('1980-08-30'),
+      dateOfBirth: '1902-03-22',
+      dateOfDeath: '1980-08-30',
       gender: 'Female',
       birthPlace: 'Manchester, UK',
       burialSite: 'Highgate Cemetery',
-      // No parents
-      motherId: null,
-      fatherId: null
+      img: 'https://example.com/elizabeth.jpg',
+      fatherId: null,
+      motherId: null
     });
 
     // Generation 2: Great-Grandparents
@@ -65,26 +65,28 @@ async function seedDatabase() {
       firstName: 'William',
       middleName: 'James',
       lastName: 'Brown',
-      dateOfBirth: new Date('1925-07-10'),
-      dateOfDeath: new Date('1995-11-05'),
+      dateOfBirth: '1925-07-10',
+      dateOfDeath: '1995-11-05',
       gender: 'Male',
       birthPlace: 'Bristol, UK',
       burialSite: 'Highgate Cemetery',
-      fatherId: ggGrandfather._id, // Father's father
-      motherId: ggGrandmother._id  // Father's mother
+      img: 'https://example.com/william.jpg',
+      fatherId: ggGrandfather._id,
+      motherId: ggGrandmother._id
     });
 
     const gGrandmother = await createPerson({
       firstName: 'Margaret',
       middleName: 'Rose',
       lastName: 'Brown',
-      dateOfBirth: new Date('1927-09-15'),
-      dateOfDeath: new Date('2005-02-28'),
+      dateOfBirth: '1927-09-15',
+      dateOfDeath: '2005-02-28',
       gender: 'Female',
       birthPlace: 'Bristol, UK',
       burialSite: 'Highgate Cemetery',
-      fatherId: ggGrandfather._id, // Mother's father
-      motherId: ggGrandmother._id  // Mother's mother
+      img: 'https://example.com/margaret.jpg',
+      fatherId: ggGrandfather._id,
+      motherId: ggGrandmother._id
     });
 
     // Generation 3: Grandparents
@@ -92,26 +94,28 @@ async function seedDatabase() {
       firstName: 'John',
       middleName: 'Paul',
       lastName: 'Brown',
-      dateOfBirth: new Date('1950-04-05'),
-      dateOfDeath: new Date('2010-12-12'),
+      dateOfBirth: '1950-04-05',
+      dateOfDeath: '2010-12-12',
       gender: 'Male',
       birthPlace: 'London, UK',
       burialSite: 'Highgate Cemetery',
-      fatherId: gGrandfather._id, // Father's father
-      motherId: gGrandmother._id  // Father's mother
+      img: 'https://example.com/john.jpg',
+      fatherId: gGrandfather._id,
+      motherId: gGrandmother._id
     });
 
     const grandmother = await createPerson({
       firstName: 'Dorothy',
       middleName: 'Marie',
       lastName: 'Brown',
-      dateOfBirth: new Date('1952-06-20'),
-      dateOfDeath: new Date('2015-10-10'),
+      dateOfBirth: '1952-06-20',
+      dateOfDeath: '2015-10-10',
       gender: 'Female',
       birthPlace: 'London, UK',
       burialSite: 'Highgate Cemetery',
-      fatherId: gGrandfather._id, // Mother's father
-      motherId: gGrandmother._id  // Mother's mother
+      img: 'https://example.com/dorothy.jpg',
+      fatherId: gGrandfather._id,
+      motherId: gGrandmother._id
     });
 
     // Generation 4: Parents
@@ -119,24 +123,26 @@ async function seedDatabase() {
       firstName: 'Michael',
       middleName: 'Andrew',
       lastName: 'Brown',
-      dateOfBirth: new Date('1975-08-30'),
+      dateOfBirth: '1975-08-30',
       dateOfDeath: null, // Still alive
       gender: 'Male',
       birthPlace: 'London, UK',
       burialSite: '',
-      fatherId: grandfather._id, // Father's father
-      motherId: grandmother._id  // Father's mother
+      img: 'https://example.com/michael.jpg',
+      fatherId: grandfather._id,
+      motherId: grandmother._id
     });
 
     const mother = await createPerson({
       firstName: 'Susan',
       middleName: 'Katherine',
       lastName: 'Miller',
-      dateOfBirth: new Date('1977-11-25'),
+      dateOfBirth: '1977-11-25',
       dateOfDeath: null, // Still alive
       gender: 'Female',
       birthPlace: 'London, UK',
       burialSite: '',
+      img: 'https://example.com/susan.jpg',
       fatherId: null, // Assuming no data for mother's father
       motherId: null  // Assuming no data for mother's mother
     });
@@ -146,11 +152,12 @@ async function seedDatabase() {
       firstName: 'Emma',
       middleName: 'Grace',
       lastName: 'Brown',
-      dateOfBirth: new Date('2000-03-10'),
+      dateOfBirth: '2000-03-10',
       dateOfDeath: null, // Still alive
       gender: 'Female',
       birthPlace: 'London, UK',
       burialSite: '',
+      img: 'https://example.com/emma.jpg',
       fatherId: father._id,
       motherId: mother._id
     });
@@ -159,11 +166,12 @@ async function seedDatabase() {
       firstName: 'Daniel',
       middleName: 'James',
       lastName: 'Brown',
-      dateOfBirth: new Date('2003-07-22'),
+      dateOfBirth: '2003-07-22',
       dateOfDeath: null, // Still alive
       gender: 'Male',
       birthPlace: 'London, UK',
       burialSite: '',
+      img: 'https://example.com/daniel.jpg',
       fatherId: father._id,
       motherId: mother._id
     });

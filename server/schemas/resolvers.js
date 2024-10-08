@@ -41,6 +41,8 @@ const resolvers = {
           birthPlace: args.birthPlace,
           burialSite: args.burialSite,
           img: args.img, // Include img field
+          fatherId: args.fatherId, // Include fatherId
+          motherId: args.motherId, // Include motherId
         });
         const savedPerson = await newPerson.save();
         return savedPerson;
@@ -53,11 +55,14 @@ const resolvers = {
     updatePerson: async (_, args) => {
       try {
         const { id, ...updateData } = args;
-        // Include img field in the update data if it exists
-        const updatedPerson = await Person.findByIdAndUpdate(id, { ...updateData, img: args.img }, {
-          new: true, // Return the updated document
-          runValidators: true, // Ensure updated data adheres to schema
-        });
+        const updatedPerson = await Person.findByIdAndUpdate(
+          id,
+          { ...updateData },
+          {
+            new: true, // Return the updated document
+            runValidators: true, // Ensure updated data adheres to schema
+          }
+        );
         if (!updatedPerson) {
           throw new Error('Person not found');
         }

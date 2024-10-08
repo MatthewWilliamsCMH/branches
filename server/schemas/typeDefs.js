@@ -13,8 +13,8 @@ const typeDefs = gql`
     birthPlace: String!
     burialSite: String
     img: String
-    mother: Person
-    father: Person
+    motherId: ID
+    fatherId: ID
     partners: [Person]
     children: [Person]
   }

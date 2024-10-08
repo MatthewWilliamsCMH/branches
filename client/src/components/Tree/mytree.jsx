@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
+// import React, { useEffect, useRef } from 'react';
+// import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
 
 // FamilyTree.templates.tommy.nodeCircleMenuButton = FamilyTree.templates.tommy_female.nodeCircleMenuButton = FamilyTree.templates.tommy_male.nodeCircleMenuButton = {
 //     radius: 25,
@@ -9,19 +9,19 @@ import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
 //     stroke: '#aeaeae'
 // };
 
-const Tree = ({ nodes }) => {
-    const divRef = useRef(null);
+// const Tree = ({ nodes }) => {
+//     const divRef = useRef(null);
 
-    useEffect(() => {
-        const family = new FamilyTree(divRef.current, {
-            nodes: nodes,
-            mode: 'dark',
-            template: 'tommy',
-            nodeTreeMenu: true,
-            nodeBinding: {
-                field_0: 'name',
-                img_0: 'img'
-            },
+//     useEffect(() => {
+//         const family = new FamilyTree(divRef.current, {
+//             nodes: nodes,
+//             mode: 'dark',
+//             template: 'tommy',
+//             nodeTreeMenu: true,
+//             nodeBinding: {
+//                 field_0: 'name',
+//                 img_0: 'img'
+//             },
            /* nodeCircleMenu: {
                 editNode: {
                     icon: FamilyTree.icon.edit(30, 30, '#aeaeae'),
@@ -39,7 +39,7 @@ const Tree = ({ nodes }) => {
                     color: "white"
                 }
             } */
-        });
+      //  });
 
         // family.nodeCircleMenuUI.on('show', function (sender, args) {
         //     var node = family.getNode(args.nodeId);
@@ -153,20 +153,77 @@ const Tree = ({ nodes }) => {
         //     };
         // });
 
-        family.load([
-            { id: 1, pids: [2], name: "Amber McKenzie", gender: "female" },
-            { id: 2, pids: [1], name: "Ava Field", gender: "male" },
-            { id: 3, mid: 1, fid: 2, name: "Peter Stevens", gender: "male" }
-        ]);
+//         family.load([
+//             { id: 1, pids: [2], name: "Amber McKenzie", gender: "female" },
+//             { id: 2, pids: [1], name: "Ava Field", gender: "male" },
+//             { id: 3, mid: 1, fid: 2, name: "Peter Stevens", gender: "male" }
+//         ]);
 
-        return () => {
-            // Clean up logic here if necessary
-        };
-    }, [nodes]);
+//         return () => {
+//             // Clean up logic here if necessary
+//         };
+//     }, [nodes]);
 
-    return (
-        <div id="tree" ref={divRef}></div>
-    );
-};
+//     return (
+//         <div id="tree" ref={divRef}></div>
+//     );
+// };
 
-export default Tree;
+// export default Tree;
+
+import React, { useEffect, useRef } from 'react';
+import { useQuery, gql } from '@apollo/client';
+import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
+
+// Define your GraphQL query
+const GET_PERSONS = gql`
+  query GetPersons {
+    persons {
+      id
+      firstName
+      lastName
+      motherId
+      fatherId
+      gender
+      img
+    }
+  }
+`;
+
+const Tree = () => {
+    const divRef = useRef(null);
+  
+    // Fetch the data from your GraphQL server
+    const { loading, error, data } = useQuery(GET_PERSONS);
+  
+    useEffect(() => {
+      if (!loading && !error) {
+        // Map the data to the format expected by the family.load function
+        const persons = data.persons.map((person) => ({
+          id: person.id,
+          pids: [person.motherId, person.fatherId],
+          //fid: person.fatherId,
+          //mid: person.motherId,
+          name: person.firstName,
+          gender: person.gender,
+          img: person.img,
+        }));
+  
+        // Initialize the FamilyTree with the fetched data
+        new FamilyTree(divRef.current, {
+          nodes: persons,
+          mode: 'dark',
+          template: 'tommy',
+          nodeTreeMenu: true,
+          nodeBinding: {
+            field_0: 'name',
+            img_0: 'img',
+          },
+        });
+      }
+    }, [loading, error, data]);
+  
+    return <div ref={divRef} />;
+  };
+  
+  export default Tree;
