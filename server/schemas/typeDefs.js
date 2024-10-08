@@ -9,11 +9,15 @@ const typeDefs = gql`
     lastName: String!
     parents: [ID]
     dateOfBirth: String!
-    dateOfDeath: String!
+    dateOfDeath: String
     gender: String!
     birthPlace: String!
-    burialSite: String!
-    img: String # Add the img field here
+    burialSite: String
+    img: String
+    mother: Person
+    father: Person
+    partners: [Person]
+    children: [Person]
   }
 
   type Query {
@@ -27,11 +31,13 @@ const typeDefs = gql`
       middleName: String!
       lastName: String!
       dateOfBirth: String!
-      dateOfDeath: String!
+      dateOfDeath: String
       gender: String!
       birthPlace: String!
-      burialSite: String!
-      img: String # Include img field in the addPerson mutation
+      burialSite: String
+      img: String
+      motherId: ID
+      fatherId: ID
     ): Person
 
     updatePerson(
@@ -44,7 +50,9 @@ const typeDefs = gql`
       gender: String
       birthPlace: String
       burialSite: String
-      img: String # Include img field in the updatePerson mutation
+      img: String
+      motherId: ID
+      fatherId: ID
     ): Person
 
     deletePerson(id: ID!): Person
