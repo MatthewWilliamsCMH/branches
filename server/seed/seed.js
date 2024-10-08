@@ -43,7 +43,8 @@ async function seedDatabase() {
       burialSite: 'Highgate Cemetery',
       // No parents
       motherId: null,
-      fatherId: null
+      fatherId: null,
+      img: "daniel_james_brown.jpg"
     });
 
     const ggGrandmother = await createPerson({
@@ -98,7 +99,7 @@ async function seedDatabase() {
       birthPlace: 'London, UK',
       burialSite: 'Highgate Cemetery',
       fatherId: gGrandfather._id, // Father's father
-      motherId: gGrandmother._id  // Father's mother
+      motherId: gGrandmother._id,  // Father's mother
     });
 
     const grandmother = await createPerson({

@@ -13,6 +13,7 @@ const PersonSchema = new Schema({
   burialSite: { type: String },
   motherId: { type: Schema.Types.ObjectId, ref: 'Person' }, // Reference to another Person document
   fatherId: { type: Schema.Types.ObjectId, ref: 'Person' }, // Reference to another Person document
+  img: {type: String }
 }, {
   timestamps: true
 });

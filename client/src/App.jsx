@@ -37,14 +37,14 @@ console.log(data)
   const nodes = data.persons.map((person, index) => ({
     //slavic was fiddling here. We think the problem is that the data being passed needs to be a number, not a string
     id: index, // person.id,
-    fid: person?.parents[0] || '', // Update as necessary, based on your family mid: tree structure
-    mid: person?.parents[1] || '',
+    // fid: person?.parents[0] || '', // Update as necessary, based on your family mid: tree structure
+    // mid: person?.parents[1] || '',
     pids: [],
     name: `${person.firstName} ${person.lastName}`,
     gender: person.gender,
-    img: person.img || 'https://example.com/default-image.jpg', // Use the person's image or provide a default
+    img: person.img ? `/assets/${person.img}` : '/assets/no_photo.png',
   }));
-console.log(nodes)
+  console.log(nodes)
   return <FamilyTree nodes={nodes} />;
 }
 
