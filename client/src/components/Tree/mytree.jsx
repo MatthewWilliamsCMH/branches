@@ -22,6 +22,51 @@ const Tree = ({ nodes }) => {
                 field_0: 'name',
                 img_0: 'img'
             },
+            editForm: {
+                // titleBinding: `${firstName} ${middleName} ${lastName}`,
+                titleBinding: "name",
+                photoBinding: "photo",
+                // generateElementsFromFields: false,
+                // addMore: 'Add more elements',
+                // addMoreBtn: 'Add element',
+                // addMoreFieldName: 'Element name',
+                elements: [
+                    { type: 'textbox', label: 'Full Name', binding: 'name' },
+
+                    [
+                        // { type: 'date', label: 'Birth Date', binding: 'dateOfBirth' },
+                        // { type: 'date', label: 'Death Date', binding: 'dateOfDeath' },
+                        // { type: 'string', label: 'Birth Location', binding: 'birthPlace' },
+                        // { type: 'string', label: 'Death Location', binding: 'burialSite'}
+                        { type: 'date', label: 'Birth Date', binding: 'birthDate' },
+                        { type: 'date', label: 'Death Date', binding: 'deathDate' }
+                    ],
+                    // [
+                    //     { type: 'select', options: [{ value: 'bg', text: 'Bulgaria' }, { value: 'ru', text: 'Russia' }, { value: 'gr', text: 'Greece' }], label: 'Country', binding: 'country' },
+                    //     { type: 'textbox', label: 'City', binding: 'city' },
+                    // ],
+                    { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl' } //, btn: 'Upload' },
+                    // { type: 'textbox', label: 'Phone', binding: 'Mobile' },
+                ],
+                buttons: {
+                    edit: {
+                        icon: FamilyTree.icon.edit(24, 24, '#fff'),
+                        text: 'Edit',
+                        hideIfEditMode: true,
+                        hideIfDetailsMode: false
+                    },
+                    // share: {
+                    //     icon: FamilyTree.icon.share(24, 24, '#fff'),
+                    //     text: 'Share'
+                    // },
+                    // pdf: {
+                    //     icon: FamilyTree.icon.pdf(24, 24, '#fff'),
+                    //     text: 'Save as PDF'
+                    // },
+                    remove: null
+                }
+            }
+
            /* nodeCircleMenu: {
                 editNode: {
                     icon: FamilyTree.icon.edit(30, 30, '#aeaeae'),
