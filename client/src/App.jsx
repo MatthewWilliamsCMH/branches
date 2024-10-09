@@ -12,16 +12,10 @@ const GET_PERSONS = gql`
       firstName
       middleName
       lastName
-      parents
       gender
       img
-<<<<<<< HEAD
-      dateOfBirth
-      dateOfDeath
-=======
       fatherId
       motherId
->>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
     }
   }
 `;
@@ -39,29 +33,16 @@ function Persons() {
   // Handle loading and error states
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
+
   // Map the fetched data to the format required by the FamilyTree component
-<<<<<<< HEAD
-  const nodes = data.persons.map((person, index) => ({
-    //slavic was fiddling here. We think the problem is that the data being passed needs to be a number, not a string
-    id: index, // person.id,
-    // fid: person?.parents[0] || '', // Update as necessary, based on your family mid: tree structure
-    // mid: person?.parents[1] || '',
-=======
   const nodes = data.persons.map(person => ({
     id: person.id,
     pids: [person.fatherId, person.motherId].filter(pid => pid), // Parent IDs
->>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
     name: `${person.firstName} ${person.lastName}`,
-    dateOfBirth: person.dateOfBirth,
-    dateOfDeath: person.dateOfDeath,
     gender: person.gender,
-    birthPlace: person.birthPlace,
-    burialSite: person.burialSite,
-    motherID: person.motherId,
-    fatherID: person.fatherID,
-    img: person.img ? `/assets/${person.img}` : '/assets/no_photo.png',
-    pids: [],
+    img: person.img || 'https://example.com/default-image.jpg', // Use the person's image or provide a default
   }));
+
   return <FamilyTree nodes={nodes} />;
 }
 

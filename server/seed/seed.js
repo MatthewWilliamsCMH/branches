@@ -22,24 +22,6 @@ async function seedDatabase() {
     pids: [], // Partner to Mary
   });
 
-<<<<<<< HEAD
-    // Generation 1: Great-Great-Grandparents
-    const ggGrandfather = await createPerson({
-      firstName: 'Edward',
-      middleName: 'Henry',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1900-01-15'),
-      dateOfDeath: new Date('1970-05-20'),
-      gender: 'Male',
-      birthPlace: 'London, UK',
-      burialSite: 'Highgate Cemetery',
-      // No parents
-      motherId: null,
-      fatherId: null,
-      img: "daniel_james_brown.jpg"
-    });
-=======
->>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
 
   const ggGrandmother = await createPerson({
     firstName: 'Mary',
@@ -73,21 +55,6 @@ async function seedDatabase() {
     pids: [], // Partner to Evelyn
   });
 
-<<<<<<< HEAD
-    // Generation 3: Grandparents
-    const grandfather = await createPerson({
-      firstName: 'John',
-      middleName: 'Paul',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1950-04-05'),
-      dateOfDeath: new Date('2010-12-12'),
-      gender: 'Male',
-      birthPlace: 'London, UK',
-      burialSite: 'Highgate Cemetery',
-      fatherId: gGrandfather._id, // Father's father
-      motherId: gGrandmother._id,  // Father's mother
-    });
-=======
   const gGrandmother = await createPerson({
     firstName: 'Evelyn',
     middleName: 'Rose',
@@ -102,8 +69,6 @@ async function seedDatabase() {
     motherId: null,
     pids: [], // Partner to Henry
   });
->>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
-
 
   // Update grandfather's pids
   await updatePerson(gGrandfather._id, { pids: [gGrandmother._id] });
@@ -144,15 +109,6 @@ async function seedDatabase() {
   await updatePerson(father._id, { pids: [mother._id] });
   await updatePerson(mother._id, { pids: [father._id] });
 
-<<<<<<< HEAD
-    console.log('Database seeded successfully!');
-    process.exit();
-  } catch (error) {
-    console.error('Error seeding database:', error);
-    process.exit(1);
-  }
-}
-=======
   // Create individuals (children)
   const child1 = await createPerson({
     firstName: 'Amber',
@@ -193,4 +149,3 @@ async function seedDatabase() {
 
 // Run the seeding function
 seedDatabase().catch((err) => console.error(err));
->>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
