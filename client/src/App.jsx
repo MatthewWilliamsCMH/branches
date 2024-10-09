@@ -21,6 +21,8 @@ const GET_PERSONS = gql`
       parents
       gender
       img
+      dateOfBirth
+      dateOfDeath
     }
   }
 `;
@@ -32,19 +34,23 @@ function Persons() {
   // Handle loading and error states
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-console.log(data)
   // Map the fetched data to the format required by the FamilyTree component
   const nodes = data.persons.map((person, index) => ({
     //slavic was fiddling here. We think the problem is that the data being passed needs to be a number, not a string
     id: index, // person.id,
     // fid: person?.parents[0] || '', // Update as necessary, based on your family mid: tree structure
     // mid: person?.parents[1] || '',
-    pids: [],
     name: `${person.firstName} ${person.lastName}`,
+    dateOfBirth: person.dateOfBirth,
+    dateOfDeath: person.dateOfDeath,
     gender: person.gender,
+    birthPlace: person.birthPlace,
+    burialSite: person.burialSite,
+    motherID: person.motherId,
+    fatherID: person.fatherID,
     img: person.img ? `/assets/${person.img}` : '/assets/no_photo.png',
+    pids: [],
   }));
-  console.log(nodes)
   return <FamilyTree nodes={nodes} />;
 }
 

@@ -17,43 +17,57 @@ const Tree = ({ nodes }) => {
             nodes: nodes,
             mode: 'dark',
             template: 'tommy',
+            // roots: [0],
             nodeTreeMenu: true,
             nodeBinding: {
                 field_0: 'name',
                 img_0: 'img'
             },
             editForm: {
-                titleBinding: "name",
-                photoBinding: "img",
-                // generateElementsFromFields: false,
+                // titleBinding: "name",
+                // photoBinding: "img",
+                // generateElementsFromFields: true,
                 // addMore: 'Add more elements',
                 // addMoreBtn: 'Add element',
                 // addMoreFieldName: 'Element name',
                 elements: [
                     { type: 'textbox', label: 'Full Name', binding: 'name' },
-
+                    { type: 'textbox', label: 'Gender', binding: 'gender' },
                     [
-                        // { type: 'date', label: 'Birth Date', binding: 'dateOfBirth' },
-                        // { type: 'date', label: 'Death Date', binding: 'dateOfDeath' },
-                        // { type: 'string', label: 'Birth Location', binding: 'birthPlace' },
-                        // { type: 'string', label: 'Death Location', binding: 'burialSite'}
-                        { type: 'date', label: 'Birth Date', binding: 'birthDate' },
-                        { type: 'date', label: 'Death Date', binding: 'deathDate' }
+                        { type: 'date', label: 'Birth Date', binding: 'dateOfBirth' },
+                        { type: 'date', label: 'Death Date', binding: 'dateOfDeath' }
                     ],
-                    // [
-                    //     { type: 'select', options: [{ value: 'bg', text: 'Bulgaria' }, { value: 'ru', text: 'Russia' }, { value: 'gr', text: 'Greece' }], label: 'Country', binding: 'country' },
-                    //     { type: 'textbox', label: 'City', binding: 'city' },
-                    // ],
-            { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' },
-                    // { type: 'textbox', label: 'Phone', binding: 'Mobile' },
+                    { type: 'textbox', label: 'Birth Location', binding: 'birthPlace' },
+                    { type: 'textbox', label: 'Burial Site', binding: 'burialSite'}
+                    // { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' },
                 ],
+                // elements: [
+                //     { type: 'textbox', label: 'Full Name', binding: 'name' },
+
+                //     [
+                //         { type: 'string', label: 'Birth Date', binding: 'dateOfBirth' },
+                //         { type: 'date', label: 'Death Date', binding: 'dateOfDeath' },
+                //         // { type: 'string', label: 'Birth Location', binding: 'birthPlace' },
+                //         // { type: 'string', label: 'Death Location', binding: 'burialSite'}
+                //         // { type: 'date', label: 'Birth Date', binding: 'birthDate' },
+                //         // { type: 'date', label: 'Death Date', binding: 'deathDate' }
+                //     ],
+                //     // [
+                //     //     { type: 'select', options: [{ value: 'bg', text: 'Bulgaria' }, { value: 'ru', text: 'Russia' }, { value: 'gr', text: 'Greece' }], label: 'Country', binding: 'country' },
+                //     //     { type: 'textbox', label: 'City', binding: 'city' },
+                //     // ],
+                //     { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' },
+                //     // { type: 'textbox', label: 'Phone', binding: 'Mobile' },
+                // ],
                 buttons: {
-                    edit: {
+                    edit: { 
                         icon: FamilyTree.icon.edit(24, 24, '#fff'),
                         text: 'Edit',
                         hideIfEditMode: true,
                         hideIfDetailsMode: false
                     },
+                    share: null,
+                    pdf: null,
                     // share: {
                     //     icon: FamilyTree.icon.share(24, 24, '#fff'),
                     //     text: 'Share'

@@ -176,7 +176,3 @@ async function seedDatabase() {
     process.exit(1);
   }
 }
-
-
-// Should we create two trees so that we can show that different trees load for different users?
-// Should the married women have their maiden names instead of their married names?
