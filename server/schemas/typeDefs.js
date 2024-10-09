@@ -6,12 +6,7 @@ const typeDefs = gql`
     firstName: String!
     middleName: String
     lastName: String!
-<<<<<<< HEAD
-    parents: [ID]
-    dateOfBirth: String!
-=======
     dateOfBirth: String
->>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
     dateOfDeath: String
     gender: String
     birthPlace: String
