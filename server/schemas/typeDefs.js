@@ -1,60 +1,60 @@
-// server/schemas/typeDefs.js
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   type Person {
     id: ID!
     firstName: String!
-    middleName: String!
+    middleName: String
     lastName: String!
-    dateOfBirth: String!
+    dateOfBirth: String
     dateOfDeath: String
-    gender: String!
-    birthPlace: String!
+    gender: String
+    birthPlace: String
     burialSite: String
     img: String
-    mother: Person
-    father: Person
-    partners: [Person]
-    children: [Person]
+    fatherId: ID
+    motherId: ID
+    pids: [ID]  # Partner IDs
   }
 
   type Query {
-    person(id: ID!): Person
-    persons: [Person]
+    persons: [Person!]!            # Query to get all persons
+    person(id: ID!): Person        # Query to get a specific person by ID
   }
 
   type Mutation {
-    addPerson(
-      firstName: String!
-      middleName: String!
-      lastName: String!
-      dateOfBirth: String!
-      dateOfDeath: String
-      gender: String!
-      birthPlace: String!
-      burialSite: String
-      img: String
-      motherId: ID
-      fatherId: ID
-    ): Person
+    createPerson(
+      firstName: String!,
+      middleName: String,
+      lastName: String!,
+      dateOfBirth: String,
+      dateOfDeath: String,
+      gender: String,
+      birthPlace: String,
+      burialSite: String,
+      img: String,
+      fatherId: ID,
+      motherId: ID,
+      pids: [ID]  # Partner IDs for new person
+    ): Person!
 
     updatePerson(
-      id: ID!
-      firstName: String
-      middleName: String
-      lastName: String
-      dateOfBirth: String
-      dateOfDeath: String
-      gender: String
-      birthPlace: String
-      burialSite: String
-      img: String
-      motherId: ID
-      fatherId: ID
-    ): Person
+      id: ID!,
+      firstName: String,
+      middleName: String,
+      lastName: String,
+      dateOfBirth: String,
+      dateOfDeath: String,
+      gender: String,
+      birthPlace: String,
+      burialSite: String,
+      img: String,
+      fatherId: ID,
+      motherId: ID,
+      pids: [ID]  # Partner IDs to update
+    ): Person!
 
-    deletePerson(id: ID!): Person
+    deletePerson(id: ID!): Person   # Mutation to delete a person
   }
 `;
 

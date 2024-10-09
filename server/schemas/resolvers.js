@@ -1,82 +1,81 @@
-// server/schemas/resolvers.js
-const Person = require('../models/Person');
+const Person = require('../models/Person'); // Adjust the path as necessary
 
 const resolvers = {
   Query: {
-    // Resolver for fetching a single person by ID
-    person: async (_, { id }) => {
-      try {
-        const person = await Person.findById(id);
-        if (!person) {
-          throw new Error('Person not found');
-        }
-        return person;
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    },
-    
-    // Resolver for fetching all persons
     persons: async () => {
       try {
-        const persons = await Person.find({});
-        return persons;
+        return await Person.find(); // Fetch all persons from the database
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error('Error fetching persons');
+      }
+    },
+    person: async (_, { id }) => {
+      try {
+        return await Person.findById(id); // Fetch a specific person by ID
+      } catch (error) {
+        throw new Error('Error fetching person');
       }
     },
   },
-  
+
   Mutation: {
-    // Resolver for adding a new person
-    addPerson: async (_, args) => {
+    createPerson: async (_, { firstName, middleName, lastName, dateOfBirth, dateOfDeath, gender, birthPlace, burialSite, img, fatherId, motherId, pids }) => {
       try {
         const newPerson = new Person({
-          firstName: args.firstName,
-          middleName: args.middleName,
-          lastName: args.lastName,
-          dateOfBirth: args.dateOfBirth,
-          dateOfDeath: args.dateOfDeath,
-          gender: args.gender,
-          birthPlace: args.birthPlace,
-          burialSite: args.burialSite,
-          img: args.img, // Include img field
+          firstName,
+          middleName,
+          lastName,
+          dateOfBirth,
+          dateOfDeath,
+          gender,
+          birthPlace,
+          burialSite,
+          img,
+          fatherId,
+          motherId,
+          pids,
         });
-        const savedPerson = await newPerson.save();
-        return savedPerson;
+
+        await newPerson.save(); // Save the new person to the database
+        return newPerson;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error('Error creating person');
       }
     },
-    
-    // Resolver for updating an existing person
-    updatePerson: async (_, args) => {
+
+    updatePerson: async (_, { id, firstName, middleName, lastName, dateOfBirth, dateOfDeath, gender, birthPlace, burialSite, img, fatherId, motherId, pids }) => {
       try {
-        const { id, ...updateData } = args;
-        // Include img field in the update data if it exists
-        const updatedPerson = await Person.findByIdAndUpdate(id, { ...updateData, img: args.img }, {
-          new: true, // Return the updated document
-          runValidators: true, // Ensure updated data adheres to schema
-        });
-        if (!updatedPerson) {
-          throw new Error('Person not found');
-        }
-        return updatedPerson;
+        const updatedPerson = await Person.findByIdAndUpdate(
+          id,
+          {
+            firstName,
+            middleName,
+            lastName,
+            dateOfBirth,
+            dateOfDeath,
+            gender,
+            birthPlace,
+            burialSite,
+            img,
+            fatherId,
+            motherId,
+            pids,
+          },
+          { new: true } // Return the updated document
+        );
+
+        return updatedPerson; // Return the updated person
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error('Error updating person');
       }
     },
-    
-    // Resolver for deleting a person
+
     deletePerson: async (_, { id }) => {
       try {
-        const deletedPerson = await Person.findByIdAndRemove(id);
-        if (!deletedPerson) {
-          throw new Error('Person not found');
-        }
-        return deletedPerson;
+        const deletedPerson = await Person.findByIdAndDelete(id); // Delete the person by ID
+        return deletedPerson; // Return the deleted person
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error('Error deleting person');
       }
     },
   },
