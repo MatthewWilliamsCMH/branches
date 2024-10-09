@@ -38,7 +38,7 @@ const Footer = () => {
          Michael's GitHub
         </a>
         <a
-          href="https://github.com/mkeeney42?tab=repositories"
+          href="https://github.com/BrianMN11"
           target="_blank"
           rel="noopener noreferrer"
           className="footer-link"
