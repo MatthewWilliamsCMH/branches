@@ -206,7 +206,7 @@ const Tree = () => {
             // Map the data to the format expected by the FamilyTree component
             let treePersons = data.persons.map((person) => ({
                 id: person.id, // Should be a string
-                pids: person.pids.map(p => p.id), // Array of strings
+                pids: person.pids, // Array of strings
                 fid: person.fatherId || null, // String or null
                 mid: person.motherId || null, // String or null
                 name: `${person.firstName} ${person.lastName}`,
