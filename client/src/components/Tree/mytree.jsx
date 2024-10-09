@@ -171,11 +171,15 @@
 
 // export default Tree;
 
+// src/components/mytree.jsx
+
+// src/components/mytree.jsx
+
 import React, { useEffect, useRef } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
+import FamilyTree from "@balkangraph/familytree.js";
 
-// Define your GraphQL query
+// Define your GraphQL query to fetch persons
 const GET_PERSONS = gql`
   query GetPersons {
     persons {
@@ -185,6 +189,7 @@ const GET_PERSONS = gql`
       motherId
       fatherId
       gender
+      pids
       img
     }
   }
@@ -192,38 +197,49 @@ const GET_PERSONS = gql`
 
 const Tree = () => {
     const divRef = useRef(null);
-  
+
     // Fetch the data from your GraphQL server
     const { loading, error, data } = useQuery(GET_PERSONS);
-  
+
     useEffect(() => {
-      if (!loading && !error) {
-        // Map the data to the format expected by the family.load function
-        const persons = data.persons.map((person) => ({
-          id: person.id,
-          pids: [person.motherId, person.fatherId],
-          //fid: person.fatherId,
-          //mid: person.motherId,
-          name: person.firstName,
-          gender: person.gender,
-          img: person.img,
-        }));
-  
-        // Initialize the FamilyTree with the fetched data
-        new FamilyTree(divRef.current, {
-          nodes: persons,
-          mode: 'dark',
-          template: 'tommy',
-          nodeTreeMenu: true,
-          nodeBinding: {
-            field_0: 'name',
-            img_0: 'img',
-          },
-        });
-      }
-    }, [loading, error, data]);
-  
-    return <div ref={divRef} />;
-  };
-  
-  export default Tree;
+        if (!loading && !error && data) {
+            // Map the data to the format expected by the FamilyTree component
+            let treePersons = data.persons.map((person) => ({
+                id: person.id, // Should be a string
+                pids: person.pids.map(p => p.id), // Array of strings
+                fid: person.fatherId || null, // String or null
+                mid: person.motherId || null, // String or null
+                name: `${person.firstName} ${person.lastName}`,
+                gender: person.gender.toLowerCase(),
+                img: person.img || '',
+            }));    
+
+            console.log(treePersons)
+            // treePersons.shift()
+            // persons = [{ id: 'xyz', pids: [], name: "Amber McKenzie", gender: "female" },
+            // { id: 'abc', pids: [undefined], name: "Ava Field", gender: "male" },
+            // { id: 'def', mid: 'xyz', fid: 2, name: "Peter Stevens", gender: "male" }]            
+
+            // Initialize FamilyTree with the fetched data
+            new FamilyTree(divRef.current, {
+                nodes: treePersons, // Pass the mapped persons as nodes
+                mode: 'dark',  // Dark mode (optional)
+                template: 'tommy', // Template type
+                nodeTreeMenu: true, // Enable tree menu
+                 nodeBinding: {
+                    field_0: 'name', // Display name
+                     img_0: 'img',    // Display image
+                 },
+            });
+        }
+    }, [loading]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+
+    return <div id="tree" ref={divRef} style={{ width: '100%', height: '100vh' }} />;
+};
+
+export default Tree;
+
+
