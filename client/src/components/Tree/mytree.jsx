@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
+// import React, { useEffect, useRef } from 'react';
+// import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
 
 // FamilyTree.templates.tommy.nodeCircleMenuButton = FamilyTree.templates.tommy_female.nodeCircleMenuButton = FamilyTree.templates.tommy_male.nodeCircleMenuButton = {
 //     radius: 25,
@@ -9,9 +9,10 @@ import FamilyTree, { nodeCircleMenu } from "@balkangraph/familytree.js";
 //     stroke: '#aeaeae'
 // };
 
-const Tree = ({ nodes }) => {
-    const divRef = useRef(null);
+// const Tree = ({ nodes }) => {
+//     const divRef = useRef(null);
 
+<<<<<<< HEAD
     useEffect(() => {
         const family = new FamilyTree(divRef.current, {
             nodes: nodes,
@@ -80,6 +81,18 @@ const Tree = ({ nodes }) => {
                 }
             }
 
+=======
+//     useEffect(() => {
+//         const family = new FamilyTree(divRef.current, {
+//             nodes: nodes,
+//             mode: 'dark',
+//             template: 'tommy',
+//             nodeTreeMenu: true,
+//             nodeBinding: {
+//                 field_0: 'name',
+//                 img_0: 'img'
+//             },
+>>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
            /* nodeCircleMenu: {
                 editNode: {
                     icon: FamilyTree.icon.edit(30, 30, '#aeaeae'),
@@ -97,17 +110,215 @@ const Tree = ({ nodes }) => {
                     color: "white"
                 }
             } */
-        });
+      //  });
 
+<<<<<<< HEAD
         // Clean up function if needed
         return () => {
             // Clean up logic here if necessary
         };
     }, [nodes]);
+=======
+        // family.nodeCircleMenuUI.on('show', function (sender, args) {
+        //     var node = family.getNode(args.nodeId);
+        //     delete args.menu.father;
+        //     delete args.menu.mother;
+        //     delete args.menu.wife;
+        //     delete args.menu.husband;
 
-    return (
-        <div id="tree" ref={divRef}></div>
-    );
+        //     if (FamilyTree.isNEU(node.mid)) {
+        //         args.menu.mother = {
+        //             icon: FamilyTree.icon.mother(30, 30, '#F57C00'),
+        //             text: "Add mother",
+        //             color: "white"
+        //         };
+        //     }
+        //     if (FamilyTree.isNEU(node.fid)) {
+        //         args.menu.father = {
+        //             icon: FamilyTree.icon.father(30, 30, '#039BE5'),
+        //             text: "Add father",
+        //             color: "white"
+        //         };
+        //     }
+        //     if (node.gender === 'male') {
+        //         args.menu.wife = {
+        //             icon: FamilyTree.icon.wife(30, 30, '#F57C00'),
+        //             text: "Add wife",
+        //             color: "white"
+        //         };
+        //     } else if (node.gender === 'female') {
+        //         args.menu.husband = {
+        //             icon: FamilyTree.icon.husband(30, 30, '#F57C00'),
+        //             text: "Add husband",
+        //             color: "white"
+        //         };
+        //     } else {
+        //         args.menu.wife = {
+        //             icon: FamilyTree.icon.wife(30, 30, '#F57C00'),
+        //             text: "Add wife",
+        //             color: "white"
+        //         };
+        //         args.menu.husband = {
+        //             icon: FamilyTree.icon.husband(30, 30, '#039BE5'),
+        //             text: "Add husband",
+        //             color: "white"
+        //         };
+        //     }
+        // });
+
+        // family.nodeCircleMenuUI.on('click', function (sender, args) {
+        //     var node = family.getNode(args.nodeId);
+
+        //     console.log("Family: ", family);
+        //     console.log("Sender: ", sender.obj.nodes);
+        //     console.log("Args: ", args);
+        //     console.log("Node: ", node);
+
+        //     let newId = node.id + 2;
+        //     console.log("New ID: ", newId)
+
+        //     switch (args.menuItemName) {
+        //         case "husband":
+        //             family.addPartnerNode({ gender: 'male', pids: [args.nodeId] });
+        //             break;
+        //         case "wife":
+        //             family.addPartnerNode({ gender: 'female', pids: [args.nodeId] });
+        //             break;
+        //         case "addSon":
+        //             // Use the structure for the addDaughter, but with different id
+        //             let son = {
+        //                 id: newId, 
+        //                 mid: node.id, 
+        //                 fid: node.pid, 
+        //                 name: "New Son", 
+        //                 gender: 'male' 
+        //             }
+        //             console.log("Son: ", son);
+
+        //             family.addChildNode({ 
+        //                 id: newId, 
+        //                 mid: node.parent.id, 
+        //                 fid: node.parentPartner.id, 
+        //                 name: "New Son", 
+        //                 gender: 'male' 
+        //             });
+        //             family.center(newId); 
+        //             break;
+        //         case "addDaughter":
+
+        //             family.addChildNode({ id: 6, mid: 1, fid: 2, name: "Mary", gender: "female" });
+        //             family.center(6);    // is this an update/re-render function (?)
+        //         //    family.addChildNode(args.nodeId, { gender: 'female', name: 'New Daughter' });
+        //             break;
+        //         case "mother":
+        //             var data = { gender: 'female' };
+        //             if (!FamilyTree.isNEU(node.fid)) {
+        //                 data.pids = [node.fid];
+        //             }
+        //             family.addParentNode(args.nodeId, 'mid', data);
+        //             break;
+        //         case "father":
+        //             var data = { gender: 'male' };
+        //             if (!FamilyTree.isNEU(node.mid)) {
+        //                 data.pids = [node.mid];
+        //             }
+        //             family.addParentNode(args.nodeId, 'fid', data);
+        //             break;
+        //         case "editNode": 
+        //             family.editUI.show(args.nodeId);
+        //             break;
+        //         default:
+        //     };
+        // });
+
+//         family.load([
+//             { id: 1, pids: [2], name: "Amber McKenzie", gender: "female" },
+//             { id: 2, pids: [1], name: "Ava Field", gender: "male" },
+//             { id: 3, mid: 1, fid: 2, name: "Peter Stevens", gender: "male" }
+//         ]);
+
+//         return () => {
+//             // Clean up logic here if necessary
+//         };
+//     }, [nodes]);
+>>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
+
+//     return (
+//         <div id="tree" ref={divRef}></div>
+//     );
+// };
+
+// export default Tree;
+
+// src/components/mytree.jsx
+
+// src/components/mytree.jsx
+
+import React, { useEffect, useRef } from 'react';
+import { useQuery, gql } from '@apollo/client';
+import FamilyTree from "@balkangraph/familytree.js";
+
+// Define your GraphQL query to fetch persons
+const GET_PERSONS = gql`
+  query GetPersons {
+    persons {
+      id
+      firstName
+      lastName
+      motherId
+      fatherId
+      gender
+      pids
+      img
+    }
+  }
+`;
+
+const Tree = () => {
+    const divRef = useRef(null);
+
+    // Fetch the data from your GraphQL server
+    const { loading, error, data } = useQuery(GET_PERSONS);
+
+    useEffect(() => {
+        if (!loading && !error && data) {
+            // Map the data to the format expected by the FamilyTree component
+            let treePersons = data.persons.map((person) => ({
+                id: person.id, // Should be a string
+                pids: person.pids.map(p => p.id), // Array of strings
+                fid: person.fatherId || null, // String or null
+                mid: person.motherId || null, // String or null
+                name: `${person.firstName} ${person.lastName}`,
+                gender: person.gender.toLowerCase(),
+                img: person.img || '',
+            }));    
+
+            console.log(treePersons)
+            // treePersons.shift()
+            // persons = [{ id: 'xyz', pids: [], name: "Amber McKenzie", gender: "female" },
+            // { id: 'abc', pids: [undefined], name: "Ava Field", gender: "male" },
+            // { id: 'def', mid: 'xyz', fid: 2, name: "Peter Stevens", gender: "male" }]            
+
+            // Initialize FamilyTree with the fetched data
+            new FamilyTree(divRef.current, {
+                nodes: treePersons, // Pass the mapped persons as nodes
+                mode: 'dark',  // Dark mode (optional)
+                template: 'tommy', // Template type
+                nodeTreeMenu: true, // Enable tree menu
+                 nodeBinding: {
+                    field_0: 'name', // Display name
+                     img_0: 'img',    // Display image
+                 },
+            });
+        }
+    }, [loading]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+
+    return <div id="tree" ref={divRef} style={{ width: '100%', height: '100vh' }} />;
 };
 
 export default Tree;
+
+

@@ -1,15 +1,8 @@
+// client/src/App.jsx
 import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql } from '@apollo/client';
 import React from 'react';
 import FamilyTree from './components/Tree/mytree';
-import Header from './components/Header/index';
-import Footer from './components/Footer/index';
-
-// Define the Apollo Client
-const client = new ApolloClient({
-  uri: '/graphql',
-  cache: new InMemoryCache(),
-});
 
 // Define the GET_PERSONS query
 const GET_PERSONS = gql`
@@ -17,15 +10,27 @@ const GET_PERSONS = gql`
     persons {
       id
       firstName
+      middleName
       lastName
       parents
       gender
       img
+<<<<<<< HEAD
       dateOfBirth
       dateOfDeath
+=======
+      fatherId
+      motherId
+>>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
     }
   }
 `;
+
+// Define the Apollo Client
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/graphql', // Update to your server's GraphQL endpoint
+  cache: new InMemoryCache(),
+});
 
 // Create a separate component for querying and displaying data
 function Persons() {
@@ -35,11 +40,17 @@ function Persons() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
   // Map the fetched data to the format required by the FamilyTree component
+<<<<<<< HEAD
   const nodes = data.persons.map((person, index) => ({
     //slavic was fiddling here. We think the problem is that the data being passed needs to be a number, not a string
     id: index, // person.id,
     // fid: person?.parents[0] || '', // Update as necessary, based on your family mid: tree structure
     // mid: person?.parents[1] || '',
+=======
+  const nodes = data.persons.map(person => ({
+    id: person.id,
+    pids: [person.fatherId, person.motherId].filter(pid => pid), // Parent IDs
+>>>>>>> c6d3f25d3b101dec71b54d6afabbfa62a1359718
     name: `${person.firstName} ${person.lastName}`,
     dateOfBirth: person.dateOfBirth,
     dateOfDeath: person.dateOfDeath,
@@ -58,9 +69,7 @@ function App() {
   return (
     <ApolloProvider client={client} style={{ height: '100%' }}>
       <div className="flex-column justify-center align-center min-100-vh bg-primary" style={{ height: "100%" }}>
-        <Header /> 
-        <Persons /> {/* Render the Persons component */}
-        <Footer /> 
+        <Persons /> {/* Render the Persons component here */}
       </div>
     </ApolloProvider>
   );
