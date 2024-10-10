@@ -9,6 +9,13 @@ async function seedDatabase() {
     useUnifiedTopology: true,
   });
 
+  const connection = mongoose.connection; // Get the connection object
+  let personsCheck = await connection.db.listCollections({ name: "people" }).toArray();
+  	if (personsCheck.length) {
+	  	await connection.db.dropCollection("people")
+  };
+
+
   // Create great-grandparents
   const ggGrandfather = await createPerson({
     firstName: 'Richard',
