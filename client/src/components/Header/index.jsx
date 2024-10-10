@@ -8,7 +8,9 @@ function Header() {
   return (
     <header className='header'>
         
-        <div>Branches</div>
+        <div>Branches 
+          <img src= {image1} />
+        </div>
         
 
     </header>

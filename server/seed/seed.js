@@ -1,165 +1,157 @@
-// seed/seed.js
-
-require('dotenv').config();
 const mongoose = require('mongoose');
-const Person = require('../models/Person');
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/genealogyDB';
-
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log('Connected to MongoDB for seeding.');
-  seedDatabase();
-})
-.catch(err => {
-  console.error('MongoDB connection error:', err);
-});
+const { createPerson, updatePerson } = require('../controllers/personController'); // Update this path as necessary
+const path = require('path'); // Import the path module
 
 async function seedDatabase() {
-  try {
-    // Clear existing data
-    await Person.deleteMany({});
-    console.log('Cleared existing Person data.');
+  // Connect to the database
+  await mongoose.connect('mongodb://localhost:27017/genealogyDB', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
-    // Helper function to create a person
-    async function createPerson(personData) {
-      const person = new Person(personData);
-      await person.save();
-      return person;
-    }
+  // Create great-grandparents
+  const ggGrandfather = await createPerson({
+    firstName: 'Richard',
+    middleName: 'John',
+    lastName: 'Brown',
+    dateOfBirth: '1920-01-01',
+    dateOfDeath: '2000-01-01',
+    gender: 'Male',
+    birthPlace: 'Dublin, Ireland',
+    burialSite: 'Mount Jerome Cemetery',
+    img: '/assets/White Man, 50s_2.jpg', // Use path.resolve() to convert the relative path to an absolute path
+    fatherId: null,
+    motherId: null,
+    pids: [], // Partner to Mary});
 
-    // Generation 1: Great-Great-Grandparents
-    const ggGrandfather = await createPerson({
-      firstName: 'Edward',
-      middleName: 'Henry',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1900-01-15'),
-      dateOfDeath: new Date('1970-05-20'),
-      gender: 'Male',
-      birthPlace: 'London, UK',
-      burialSite: 'Highgate Cemetery',
-      parents: [] // No parents in the earliest generation
-    });
+  });
 
-    const ggGrandmother = await createPerson({
-      firstName: 'Elizabeth',
-      middleName: 'Anne',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1902-03-22'),
-      dateOfDeath: new Date('1980-08-30'),
-      gender: 'Female',
-      birthPlace: 'Manchester, UK',
-      burialSite: 'Highgate Cemetery',
-      parents: [] // No parents in the earliest generation
-    });
 
-    // Generation 2: Great-Grandparents
-    const gGrandfather = await createPerson({
-      firstName: 'William',
-      middleName: 'James',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1925-07-10'),
-      dateOfDeath: new Date('1995-11-05'),
-      gender: 'Male',
-      birthPlace: 'Bristol, UK',
-      burialSite: 'Highgate Cemetery',
-      parents: [ggGrandfather._id, ggGrandmother._id]
-    });
+  const ggGrandmother = await createPerson({
+    firstName: 'Mary',
+    middleName: 'Anne',
+    lastName: 'Johnson',
+    dateOfBirth: '1922-05-05',
+    dateOfDeath: '2015-06-06',
+    gender: 'Female',
+    birthPlace: 'Cork, Ireland',
+    burialSite: 'St. Finbarr’s Cemetery',
+    img: '/assets/margaret_rose_brown.jpg', // Use path.resolve() to convert the relative path to an absolute path
+    fatherId: null,
+    motherId: null,
+    pids: [], // Partner to Richard
+  });
 
-    const gGrandmother = await createPerson({
-      firstName: 'Margaret',
-      middleName: 'Rose',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1927-09-15'),
-      dateOfDeath: new Date('2005-02-28'),
-      gender: 'Female',
-      birthPlace: 'Bristol, UK',
-      burialSite: 'Highgate Cemetery',
-      parents: [ggGrandfather._id, ggGrandmother._id]
-    });
+  await updatePerson(ggGrandfather._id, { pids: [ggGrandmother._id] });
+  await updatePerson(ggGrandmother._id, { pids: [ggGrandfather._id] });
 
-    // Generation 3: Grandparents
-    const grandfather = await createPerson({
-      firstName: 'John',
-      middleName: 'Paul',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1950-04-05'),
-      dateOfDeath: new Date('2010-12-12'),
-      gender: 'Male',
-      birthPlace: 'London, UK',
-      burialSite: 'Highgate Cemetery',
-      parents: [gGrandfather._id, gGrandmother._id]
-    });
+  // Create grandparents
+  const gGrandfather = await createPerson({
+    firstName: 'Henry',
+    middleName: 'William',
+    lastName: 'Brown',
+    dateOfBirth: '1945-03-03',
+    dateOfDeath: null,
+    gender: 'Male',
+    birthPlace: 'London, UK',
+    burialSite: null,
+    img: '/assets/daniel_james_brown.jpg',
+    fatherId: ggGrandfather._id,
+    motherId: ggGrandmother._id,
+    pids: [], // Partner to Evelyn
+  });
 
-    const grandmother = await createPerson({
-      firstName: 'Dorothy',
-      middleName: 'Marie',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1952-06-20'),
-      dateOfDeath: new Date('2015-10-10'),
-      gender: 'Female',
-      birthPlace: 'London, UK',
-      burialSite: 'Highgate Cemetery',
-      parents: [gGrandfather._id, gGrandmother._id]
-    });
+  const gGrandmother = await createPerson({
+    firstName: 'Evelyn',
+    middleName: 'Rose',
+    lastName: 'Taylor',
+    dateOfBirth: '1947-08-10',
+    dateOfDeath: null,
+    gender: 'Female',
+    birthPlace: 'London, UK',
+    burialSite: null,
+    img: '/assets/dorothy_marie_brown.jpg',
+    fatherId: null,
+    motherId: null,
+    pids: [], // Partner to Henry
+  });
 
-    // Generation 4: Parents
-    const father = await createPerson({
-      firstName: 'Michael',
-      middleName: 'Andrew',
-      lastName: 'Brown',
-      dateOfBirth: new Date('1975-08-30'),
-      dateOfDeath: null, // Still alive
-      gender: 'Male',
-      birthPlace: 'London, UK',
-      burialSite: '',
-      parents: [grandfather._id, grandmother._id]
-    });
+  // Update grandfather's pids
+  await updatePerson(gGrandfather._id, { pids: [gGrandmother._id] });
+  await updatePerson(gGrandmother._id, { pids: [gGrandfather._id] });
 
-    const mother = await createPerson({
-      firstName: 'Susan',
-      middleName: 'Katherine',
-      lastName: 'Miller',
-      dateOfBirth: new Date('1977-11-25'),
-      dateOfDeath: null, // Still alive
-      gender: 'Female',
-      birthPlace: 'London, UK',
-      burialSite: '',
-      parents: [] // Assuming no data for mother's parents
-    });
+  // Create parents
+  const father = await createPerson({
+    firstName: 'John',
+    middleName: 'Paul',
+    lastName: 'Brown',
+    dateOfBirth: '1950-04-05',
+    dateOfDeath: '2010-12-12',
+    gender: 'Male',
+    birthPlace: 'London, UK',
+    burialSite: 'Highgate Cemetery',
+    img: '/assets/michael_andrew_brown.jpg',
+    fatherId: gGrandfather._id,
+    motherId: gGrandmother._id,
+    pids: [], // Partner to Jane
+  });
 
-    // Generation 5: Children
-    const child1 = await createPerson({
-      firstName: 'Emma',
-      middleName: 'Grace',
-      lastName: 'Brown',
-      dateOfBirth: new Date('2000-03-10'),
-      dateOfDeath: null, // Still alive
-      gender: 'Female',
-      birthPlace: 'London, UK',
-      burialSite: '',
-      parents: [father._id, mother._id]
-    });
+  const mother = await createPerson({
+    firstName: 'Jane',
+    middleName: 'Anne',
+    lastName: 'Smith',
+    dateOfBirth: '1952-03-14',
+    dateOfDeath: null,
+    gender: 'Female',
+    birthPlace: 'Edinburgh, UK',
+    burialSite: null,
+    img: '/assets/susan_katherine_miller.jpg',
+    fatherId: null,
+    motherId: null,
+    pids: [], // Partner to John
+  });
 
-    const child2 = await createPerson({
-      firstName: 'Daniel',
-      middleName: 'James',
-      lastName: 'Brown',
-      dateOfBirth: new Date('2003-07-22'),
-      dateOfDeath: null, // Still alive
-      gender: 'Male',
-      birthPlace: 'London, UK',
-      burialSite: '',
-      parents: [father._id, mother._id]
-    });
+  // Update father's pids
+  await updatePerson(father._id, { pids: [mother._id] });
+  await updatePerson(mother._id, { pids: [father._id] });
 
-    console.log('Database seeded successfully!');
-    process.exit();
-  } catch (error) {
-    console.error('Error seeding database:', error);
-    process.exit(1);
-  }
+  // Create individuals (children)
+  const child1 = await createPerson({
+    firstName: 'Amber',
+    middleName: 'Louise',
+    lastName: 'Brown',
+    dateOfBirth: '1975-09-25',
+    dateOfDeath: null,
+    gender: 'Female',
+    birthPlace: 'London, UK',
+    burialSite: null,
+    img: 'https://example.com/amber.jpg',
+    fatherId: father._id,
+    motherId: mother._id,
+    pids: [],
+  });
+
+  const child2 = await createPerson({
+    firstName: 'Ava',
+    middleName: 'Grace',
+    lastName: 'Brown',
+    dateOfBirth: '1978-12-12',
+    dateOfDeath: null,
+    gender: 'Female',
+    birthPlace: 'London, UK',
+    burialSite: null,
+    img: 'https://example.com/ava.jpg',
+    fatherId: father._id,
+    motherId: mother._id,
+    pids: [],
+  });
+
+  // Log seeded data
+  console.log('Seeding completed successfully!');
+
+  // Close the connection
+  await mongoose.connection.close();
 }
+
+// Run the seeding function
+seedDatabase().catch((err) => console.error(err));

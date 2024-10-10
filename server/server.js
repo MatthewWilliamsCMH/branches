@@ -42,6 +42,7 @@ const startApolloServer = async () => {
   app.use(express.json());
   
   app.use('/graphql', expressMiddleware(server));
+  app.use(express.static(path.join(__dirname, 'public')));
 
   //
 
