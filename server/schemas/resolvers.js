@@ -1,4 +1,9 @@
 const Person = require('../models/Person'); // Adjust the path as necessary
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User'); // Adjust the path as necessary
+const Person = require('../models/Person'); // Already present
+const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
   Query: {
