@@ -11,6 +11,7 @@ const PersonSchema = new Schema({
   gender: { type: String, required: true },
   birthPlace: { type: String, required: true },
   burialSite: { type: String },
+  img: { type: String },
   motherId: { type: Schema.Types.ObjectId, ref: 'Person' },
   fatherId: { type: Schema.Types.ObjectId, ref: 'Person' },
   pids: [{ type: Schema.Types.ObjectId, ref: 'Person' }],

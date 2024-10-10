@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { createPerson, updatePerson } = require('../controllers/personController'); // Update this path as necessary
+const path = require('path'); // Import the path module
 
 async function seedDatabase() {
   // Connect to the database
@@ -18,10 +19,11 @@ async function seedDatabase() {
     gender: 'Male',
     birthPlace: 'Dublin, Ireland',
     burialSite: 'Mount Jerome Cemetery',
-    img: 'https://example.com/richard.jpg',
+    img: '/assets/White Man, 50s_2.jpg', // Use path.resolve() to convert the relative path to an absolute path
     fatherId: null,
     motherId: null,
-    pids: [], // Partner to Mary
+    pids: [], // Partner to Mary});
+
   });
 
 
@@ -34,7 +36,7 @@ async function seedDatabase() {
     gender: 'Female',
     birthPlace: 'Cork, Ireland',
     burialSite: 'St. Finbarr’s Cemetery',
-    img: 'https://example.com/mary.jpg',
+    img: '/assets/margaret_rose_brown.jpg', // Use path.resolve() to convert the relative path to an absolute path
     fatherId: null,
     motherId: null,
     pids: [], // Partner to Richard
