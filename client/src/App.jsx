@@ -3,6 +3,8 @@ import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql } from '@apollo/client';
 import React from 'react';
 import FamilyTree from './components/Tree/mytree';
+import Header from '../src/components/Header/index';
+import Footer from '../src/components/Footer/index';
 
 // Define the GET_PERSONS query
 const GET_PERSONS = gql`
@@ -48,11 +50,13 @@ function Persons() {
 
 function App() {
   return (
-    <ApolloProvider client={client} style={{ height: '100%' }}>
-      <div className="flex-column justify-center align-center min-100-vh bg-primary" style={{ height: "100%" }}>
-        <Persons /> {/* Render the Persons component here */}
-      </div>
-    </ApolloProvider>
+    <ApolloProvider client={client}>
+    <Header /> 
+    <div className="flex-column justify-center align-center min-100-vh bg-primary" style={{ height: '100%' }}>
+      <Persons /> 
+    </div>
+    <Footer /> 
+  </ApolloProvider>
   );
 }
 
