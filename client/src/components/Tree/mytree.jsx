@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import FamilyTree from "@balkangraph/familytree.js";
 
 // Define your GraphQL query to fetch persons
@@ -21,6 +21,8 @@ const GET_PERSONS = gql`
     }
   }
 `;
+
+// Define the GraphQL mutation to update a person
 const UPDATE_PERSON = gql`
   mutation Mutation(
     $updatePersonId: ID!
@@ -68,87 +70,105 @@ const UPDATE_PERSON = gql`
   }
 `;
 
-// const DELETE_PERSON = gql`
-// mutation DeletePerson(
-//     $deletePersonId: ID!
-//     ) {
-//     deletePerson(id: $deletePersonId) {
-      
-//     }
-//   }
-//     `;
-
 const Tree = () => {
   const divRef = useRef(null);
   const treeRef = useRef(null);
+
   // Fetch the data from your GraphQL server
   const { loading, error, data } = useQuery(GET_PERSONS);
+  const [updatePerson] = useMutation(UPDATE_PERSON);
 
-    useEffect(() => {
-        if (!loading && !error && data) {
-            // Map the data to the format expected by the FamilyTree component
-            let treePersons = data.persons.map((person) => ({
-                id: person.id, // Should be a string
-                pids: person.pids, // Array of strings
-                fid: person.fatherId || null, // String or null
-                mid: person.motherId || null, // String or null
-                name: `${person.firstName} ${person.lastName}`,
-                gender: person.gender.toLowerCase(),
-                img: person.img || '',
-                dateOfBirth: person.dateOfBirth ? new Date(Number(person.dateOfBirth)).toISOString().split('T')[0] : null,
-                birthPlace: person.birthPlace,
-                dateOfDeath: person.dateOfDeath ? new Date(Number(person.dateOfDeath)).toISOString().split('T')[0] : null,
-                burialSite: person.burialSite
-            }));    
+  useEffect(() => {
+    if (!loading && !error && data) {
+      // Map the data to the format expected by the FamilyTree component
+      const treePersons = data.persons.map((person) => ({
+        id: person.id,
+        pids: person.pids,
+        fid: person.fatherId || null,
+        mid: person.motherId || null,
+        name: `${person.firstName} ${person.lastName}`,
+        gender: person.gender.toLowerCase(),
+        img: person.img || '',
+        dateOfBirth: person.dateOfBirth
+          ? new Date(Number(person.dateOfBirth)).toISOString().split('T')[0]
+          : null,
+        birthPlace: person.birthPlace,
+        dateOfDeath: person.dateOfDeath
+          ? new Date(Number(person.dateOfDeath)).toISOString().split('T')[0]
+          : null,
+        burialSite: person.burialSite,
+      }));
 
-      console.log(treePersons);
-      // treePersons.shift()
-      // persons = [{ id: 'xyz', pids: [], name: "Amber McKenzie", gender: "female" },
-      // { id: 'abc', pids: [undefined], name: "Ava Field", gender: "male" },
-      // { id: 'def', mid: 'xyz', fid: 2, name: "Peter Stevens", gender: "male" }]
+      // Initialize FamilyTree with the fetched data
+      treeRef.current = new FamilyTree(divRef.current, {
+        nodes: treePersons,
+        mode: 'dark',
+        template: 'tommy',
+        nodeTreeMenu: true,
+        nodeBinding: {
+          field_0: 'name',
+          img_0: 'img',
+        },
+        editForm: {
+          titleBinding: "name",
+          photoBinding: "img",
+          elements: [
+            { type: 'textbox', label: 'Full Name', binding: 'name' },
+            { type: 'textbox', label: 'Gender', binding: 'gender' },
+            [
+              { type: 'date', label: 'Birth Date', binding: 'dateOfBirth' },
+              { type: 'date', label: 'Death Date', binding: 'dateOfDeath' },
+            ],
+            [
+              { type: 'textbox', label: 'Birth Place', binding: 'birthPlace' },
+              { type: 'textbox', label: 'Burial Site', binding: 'burialSite' },
+            ],
+          ],
+          buttons: {
+            edit: {
+              icon: FamilyTree.icon.edit(24, 24, '#fff'),
+              text: 'Edit',
+              hideIfEditMode: true,
+              hideIfDetailsMode: false,
+            },
+            share: null,
+            pdf: null,
+            remove: null,
+          },
+        },
+      });
 
-            // Initialize FamilyTree with the fetched data
-            new FamilyTree(divRef.current, {
-                nodes: treePersons, // Pass the mapped persons as nodes
-                mode: 'dark',  // Dark mode (optional)
-                template: 'tommy', // Template type
-                nodeTreeMenu: true, // Enable tree menu
-                 nodeBinding: {
-                    field_0: 'name', // Display name
-                     img_0: 'img',    // Display image
-                 },
-                editForm: {
-                    titleBinding: "name",
-                    photoBinding: "img",
-                    // generateElementsFromFields: false,
-                    elements: [
-                        { type: 'textbox', label: 'Full Name', binding: 'name' },
-                        { type: 'textbox', label: 'Gender', binding: 'gender' },
-                        [
-                            { type: 'date', label: 'Birth Date', binding: 'dateOfBirth' },
-                            { type: 'date', label: 'Death Date', binding: 'dateOfDeath' }
-                        ],
-                        [
-                            { type: 'textbox', label: 'Birth Place', binding: 'birthPlace' },
-                            { type: 'textbox', label: 'Burial Site', binding: 'burialSite' }
-                        ],
-                        // { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' },
-                    ],
-                    buttons: {
-                        edit: { 
-                            icon: FamilyTree.icon.edit(24, 24, '#fff'),
-                            text: 'Edit',
-                            hideIfEditMode: true,
-                            hideIfDetailsMode: false
-                        },
-                        share: null,
-                        pdf: null,
-                        remove: null
-                    }
-                }
-            });
+      treeRef.current.onUpdateNode(async (args) => {
+        console.log('+++++ Updated node! ++++');
+        console.log(args);
+
+        // Extract data from args and map them to mutation variables
+        const updatedPersonData = {
+          updatePersonId: args.node.id,
+          firstName: args.node.name.split(" ")[0],
+          lastName: args.node.name.split(" ")[1],
+          gender: args.node.gender,
+          img: args.node.img || "",
+          fatherId: args.node.fid || null,
+          motherId: args.node.mid || null,
+          pids: args.node.pids || [],
+        };
+
+        // Call the mutation to update the person
+        try {
+          const { data } = await updatePerson({
+            variables: updatedPersonData,
+          });
+          console.log("Person updated:", data.updatePerson);
+
+          // Optionally, refresh the FamilyTree nodes after update
+          treeRef.current.load(treePersons);
+        } catch (error) {
+          console.error("Error updating person:", error);
         }
-    }, [loading]);
+      });
+    }
+  }, [loading, error, data, updatePerson]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
