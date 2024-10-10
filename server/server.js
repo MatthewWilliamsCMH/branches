@@ -8,14 +8,26 @@ const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const User = require('./models/User'); // Adjust path as per your structure
 
-const { typeDefs, resolvers } = require('./schemas');
-const db = require('./config/connection');
+
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => {
+    const token = req.headers.authorization || '';
+    if (token) {
+      try {
+        const user = jwt.verify(token, JWT_SECRET);
+        return { user };
+      } catch (err) {
+        console.log('Invalid token');
+      }
+    }
+    return null;
+  },
 });
 
 const authenticateJWT = (req, res, next) => {

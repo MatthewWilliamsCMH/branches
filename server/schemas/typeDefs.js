@@ -16,6 +16,16 @@ const typeDefs = gql`
     motherId: ID
     pids: [ID]  # Partner IDs
   }
+    type User {
+    id: ID!
+    name: String!
+    email: String!
+  }
+
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
 
   type Query {
     persons: [Person!]!            # Query to get all persons
@@ -55,6 +65,17 @@ const typeDefs = gql`
     ): Person!
 
     deletePerson(id: ID!): Person   # Mutation to delete a person
+
+    signup(
+      name: String!,
+      email: String!,
+      password: String!
+    ): AuthPayload!                 # Sign up mutation
+
+    login(
+      email: String!,
+      password: String!
+    ): AuthPayload!                 # Login mutation
   }
 `;
 
