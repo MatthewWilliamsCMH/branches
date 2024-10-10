@@ -186,6 +186,8 @@ const GET_PERSONS = gql`
       id
       firstName
       lastName
+      dateOfBirth
+      dateOfDeath
       motherId
       fatherId
       gender
@@ -212,8 +214,12 @@ const Tree = () => {
                 name: `${person.firstName} ${person.lastName}`,
                 gender: person.gender.toLowerCase(),
                 img: person.img || '',
+                dateOfBirth: person.dateOfBirth,
+                birthPlace: person.birthPlace,
+                dateOfDeath: person.dateOfDeath,
+                burialSite: person.burialSite
             }));    
-
+console.log(data)
             console.log(treePersons)
             // treePersons.shift()
             // persons = [{ id: 'xyz', pids: [], name: "Amber McKenzie", gender: "female" },
@@ -230,6 +236,31 @@ const Tree = () => {
                     field_0: 'name', // Display name
                      img_0: 'img',    // Display image
                  },
+                editForm: {
+                    titleBinding: "name",
+                    photoBinding: "img",
+                    // generateElementsFromFields: false,
+                    elements: [
+                        { type: 'textbox', label: 'Full Name', binding: 'name' },
+                        { type: 'textbox', label: 'Gender', binding: 'gender' },
+                        { type: 'date', label: 'Birth Date', binding: 'dateOfBirth' },
+                        { type: 'textbox', label: 'Birth Place', binding: 'birthPlace' },
+                        { type: 'date', label: 'Death Date', binding: 'dateOfDeath' },
+                        { type: 'textbox', label: 'Burial Site', binding: 'burialSite' },
+                        // { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' },
+                    ],
+                    buttons: {
+                        edit: { 
+                            icon: FamilyTree.icon.edit(24, 24, '#fff'),
+                            text: 'Edit',
+                            hideIfEditMode: true,
+                            hideIfDetailsMode: false
+                        },
+                        share: null,
+                        pdf: null,
+                        remove: null
+                    }
+                }
             });
         }
     }, [loading]);
