@@ -40,17 +40,7 @@ const HomePage = () => {
   );
 };
 
-const styles = {
-  toggleButton: {
-    padding: '10px 20px',
-    backgroundColor: '#007BFF',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    marginBottom: '20px',
-    cursor: 'pointer',
-  },
-};
+
 
 export default HomePage;
 
