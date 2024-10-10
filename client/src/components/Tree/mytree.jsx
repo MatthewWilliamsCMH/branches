@@ -194,10 +194,12 @@ const GET_PERSONS = gql`
     }
   }
 `;
+// Update person mutation
+// const UPDATE_PERSON =gql``;
 
 const Tree = () => {
     const divRef = useRef(null);
-
+    const treeRef = useRef(null);
     // Fetch the data from your GraphQL server
     const { loading, error, data } = useQuery(GET_PERSONS);
 
@@ -221,7 +223,7 @@ const Tree = () => {
             // { id: 'def', mid: 'xyz', fid: 2, name: "Peter Stevens", gender: "male" }]            
 
             // Initialize FamilyTree with the fetched data
-            new FamilyTree(divRef.current, {
+            treeRef.current = new FamilyTree(divRef.current, {
                 nodes: treePersons, // Pass the mapped persons as nodes
                 mode: 'dark',  // Dark mode (optional)
                 template: 'tommy', // Template type
@@ -231,6 +233,14 @@ const Tree = () => {
                      img_0: 'img',    // Display image
                  },
             });
+            treeRef.current.onUpdateNode((args) => { 
+                console.log('+++++ Updated node! ++++');
+
+                console.log(args);
+                // parse the args and call UPDATE_PERSON mutation
+                // treeRef.current.refresh ??
+             });
+
         }
     }, [loading]);
 
@@ -239,5 +249,12 @@ const Tree = () => {
 
     return <div id="tree" ref={divRef} style={{ width: '100%', height: '100vh' }} />;
 };
+
+
+
+
+   
+
+
 
 export default Tree;
