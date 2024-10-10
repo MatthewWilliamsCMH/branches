@@ -64,7 +64,7 @@ const Tree = () => {
                 editForm: {
                     titleBinding: "name",
                     photoBinding: "img",
-                    // generateElementsFromFields: false,
+                    generateElementsFromFields: false,
                     elements: [
                         { type: 'textbox', label: 'Full Name', binding: 'name' },
                         { type: 'textbox', label: 'Gender', binding: 'gender' },
@@ -76,7 +76,7 @@ const Tree = () => {
                             { type: 'textbox', label: 'Birth Place', binding: 'birthPlace' },
                             { type: 'textbox', label: 'Burial Site', binding: 'burialSite' }
                         ],
-                        // { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' },
+                        // { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' }, //It would be nice to have a facility for uploading an image, but not required for project completions
                     ],
                     buttons: {
                         edit: { 

@@ -1,0 +1,11 @@
+svg.tommy .node.male>rect {
+  fill: #039be5;
+}
+
+svg.tommy .node {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+svg.tommy .node.female>rect {
+  fill: #ff8bc5;
+}  
