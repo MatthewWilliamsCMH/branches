@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   type Person {
-    id: ID!
+    id: String
     firstName: String!
     middleName: String
     lastName: String!
@@ -19,7 +19,7 @@ const typeDefs = gql`
 
   type Query {
     persons: [Person!]!            # Query to get all persons
-    person(id: ID!): Person        # Query to get a specific person by ID
+    person(id: String): Person        # Query to get a specific person by ID
   }
 
   type Mutation {
@@ -39,7 +39,7 @@ const typeDefs = gql`
     ): Person!
 
     updatePerson(
-      id: ID!,
+      id: String,
       firstName: String,
       middleName: String,
       lastName: String,

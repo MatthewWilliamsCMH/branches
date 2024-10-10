@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PersonSchema = new Schema({
+  id: { type: String, required: true, unique: true },
   firstName: { type: String, required: true },
   middleName: { type: String, required: true },
   lastName: { type: String, required: true },
@@ -12,10 +13,10 @@ const PersonSchema = new Schema({
   birthPlace: { type: String, required: true },
   burialSite: { type: String },
   img: { type: String },
-  motherId: { type: Schema.Types.ObjectId, ref: 'Person' },
-  fatherId: { type: Schema.Types.ObjectId, ref: 'Person' },
-  pids: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
-  children: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
+  motherId: { type: String },
+  fatherId: { type: String },
+  pids: [{ type: String }],
+  children: [{ type: String }],
 }, {
   timestamps: true
 });
