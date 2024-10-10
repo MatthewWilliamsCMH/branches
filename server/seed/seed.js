@@ -19,6 +19,8 @@ async function seedDatabase() {
     birthPlace: 'Dublin, Ireland',
     burialSite: 'Mount Jerome Cemetery',
     img: 'https://example.com/richard.jpg',
+    fatherId: null,
+    motherId: null,
     pids: [], // Partner to Mary
   });
 
@@ -33,6 +35,8 @@ async function seedDatabase() {
     birthPlace: 'Cork, Ireland',
     burialSite: 'St. Finbarr’s Cemetery',
     img: 'https://example.com/mary.jpg',
+    fatherId: null,
+    motherId: null,
     pids: [], // Partner to Richard
   });
 
