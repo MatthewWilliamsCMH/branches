@@ -74,7 +74,6 @@ async function seedDatabase() {
     pids: [], // Partner to Henry
   });
 
-
   // Update grandfather's pids
   await updatePerson(gGrandfather._id, { pids: [gGrandmother._id] });
   await updatePerson(gGrandmother._id, { pids: [gGrandfather._id] });
