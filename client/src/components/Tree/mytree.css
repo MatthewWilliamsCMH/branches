@@ -1,3 +1,7 @@
+html {
+  background-color: #1c1c1c;
+}
+
 svg.tommy .node.male>rect {
   fill: #039be5;
 }
