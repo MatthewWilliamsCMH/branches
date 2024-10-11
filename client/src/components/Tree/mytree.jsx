@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import FamilyTree from "@balkangraph/familytree.js";
+import "./tree.css"
 
 // Define your GraphQL query to fetch persons
 const GET_PERSONS = gql`
