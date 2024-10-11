@@ -1,0 +1,15 @@
+svg.tommy .node.male>rect {
+    fill: #1e3a8a;
+}
+svg.tommy .node.female>rect {
+    fill: #86198f;
+}
+#tree>svg {
+    background-color: #2E2E2E;
+}
+#base_tree_menu path, #base_tree_menu ellipse {
+    fill: #0ea5e9
+}
+[data-l-id] path {
+    stroke: #64748b;
+}
