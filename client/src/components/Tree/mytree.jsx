@@ -183,6 +183,7 @@ const Tree = () => {
             }
           `;
 
+//Two problems below: filename is not being passed to fetch, and it's looking at 3000, not 3001
           fetch("/assets", {
             method: "POST",
             headers: {
