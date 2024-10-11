@@ -124,7 +124,7 @@ const Tree = () => {
               { type: 'textbox', label: 'Birth Place', binding: 'birthPlace' },
               { type: 'textbox', label: 'Burial Site', binding: 'burialSite' },
             ],
-            // { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' }, //It would be nice to have a facility for uploading an image, but not required for project completions
+            { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' }
           ],
           buttons: {
             edit: {
@@ -135,7 +135,7 @@ const Tree = () => {
             },
             share: null,
             pdf: null,
-            remove: null,
+            // remove: null,
           },
         },
       });
@@ -169,6 +169,40 @@ const Tree = () => {
           console.error("Error updating person:", error);
         }
       });
+
+      treeRef.current.editUI.on('element-btn-click', function (sender, args) {
+        FamilyTree.fileUploadDialog(function(file) {
+          const data = new FormData();
+          data.append("files", file);
+
+          const mutation = `
+            mutation($file: Upload!) {
+              uploadPhoto(file: $file){
+                url
+              }
+            }
+          `;
+
+          fetch("/assets", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+            },
+            body: data
+          })
+          .then(response => response.json())
+          .then(responseData => {
+            if (responseData.data.uploadPhoto) {
+              const url = responseData.data.uploadPhoto.url;
+              args.input.value = url;
+              sender.setAvatar(url)
+            }
+          })
+          .catch(error => {
+            console.error("Error uploading photo:", error);
+          });
+        });
+      })
     }
   }, [loading, error, data, updatePerson]);
 
