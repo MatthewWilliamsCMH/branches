@@ -137,6 +137,7 @@ const Tree = () => {
         mode: 'dark',
         template: 'tommy',
         nodeTreeMenu: true,
+        miniMap: true,
         nodeBinding: {
           field_0: 'name',
           img_0: 'img',
@@ -155,6 +156,7 @@ const Tree = () => {
               { type: 'textbox', label: 'Birth Place', binding: 'birthPlace' },
               { type: 'textbox', label: 'Burial Site', binding: 'burialSite' },
             ],
+            // { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' }, //It would be nice to have a facility for uploading an image, but not required for project completions
           ],
           buttons: {
             edit: {
