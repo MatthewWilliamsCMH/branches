@@ -36,9 +36,9 @@ const UPDATE_PERSON = gql`
     $birthPlace: String
     $burialSite: String
     $img: String
-    $fatherId: ID
-    $motherId: ID
-    $pids: [ID]
+    $fatherId: String
+    $motherId: String
+    $pids: [String]
   ) {
     updatePerson(
       id: $updatePersonId
@@ -180,8 +180,11 @@ const Tree = () => {
         if(args.addNodesData.length > 0) {
             const newPersonData = {
                 // updatePersonId: args.updateNodesData[0].id
-              id: args.addNodesData[0].id,
+              updatePersonId: args.addNodesData[0].id,
               gender: args.addNodesData[0].gender,
+              fatherId: args.addNodesData[0].fid || null,
+              motherId: args.addNodesData[0].mid || null,
+              pids: args.addNodesData[0].pids || [],
             };
 
             try {
