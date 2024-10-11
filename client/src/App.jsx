@@ -6,6 +6,7 @@ import FamilyTree from './components/Tree/mytree';
 import Header from '../src/components/Header/index';
 import Footer from '../src/components/Footer/index';
 
+//NOT SURE WHY THIS IS HERE; WHEN I COMMENT IT OUT, THE APP BREAKS, BUT WHEN I ADD ANOTHER PARAMETER TO PULL (LIKE BIRTHPLACE), NOTHING IN THE APP CHANGES
 // Define the GET_PERSONS query
 const GET_PERSONS = gql`
   query GetPersons {
@@ -36,6 +37,7 @@ function Persons() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+//I'M NOT SURE WHY THIS IS HERE; IT DOESN'T SEEM TO DO ANYTHING, BUT WHEN I COMMENT IT OUT, THE APP BREAKS. WHEN I COMMENT OUT THE PARAMETERS, THE APP STILL WORKS
   // Map the fetched data to the format required by the FamilyTree component
   const nodes = data.persons.map(person => ({
     id: person.id,
