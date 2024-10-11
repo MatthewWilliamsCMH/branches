@@ -2,44 +2,28 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   type Person {
-    id: ID!
-    firstName: String!
+    id: String
+    firstName: String
     middleName: String
-    lastName: String!
+    lastName: String
     dateOfBirth: String
     dateOfDeath: String
     gender: String
     birthPlace: String
     burialSite: String
     img: String
-    fatherId: ID
-    motherId: ID
-    pids: [ID]  # Partner IDs
+    fatherId: String
+    motherId: String
+    pids: [String]  # Partner IDs
   }
 
   type Query {
     persons: [Person!]!            # Query to get all persons
-    person(id: ID!): Person        # Query to get a specific person by ID
+    person(id: String): Person        # Query to get a specific person by ID
   }
 
   type Mutation {
     createPerson(
-      firstName: String!,
-      middleName: String,
-      lastName: String!,
-      dateOfBirth: String,
-      dateOfDeath: String,
-      gender: String,
-      birthPlace: String,
-      burialSite: String,
-      img: String,
-      fatherId: ID,
-      motherId: ID,
-      pids: [ID]  # Partner IDs for new person
-    ): Person!
-
-    updatePerson(
-      id: ID!,
       firstName: String,
       middleName: String,
       lastName: String,
@@ -49,12 +33,28 @@ const typeDefs = gql`
       birthPlace: String,
       burialSite: String,
       img: String,
-      fatherId: ID,
-      motherId: ID,
-      pids: [ID]  # Partner IDs to update
+      fatherId: String,
+      motherId: String,
+      pids: [String]  # Partner IDs for new person
     ): Person!
 
-    deletePerson(id: ID!): Person   # Mutation to delete a person
+    updatePerson(
+      id: String,
+      firstName: String,
+      middleName: String,
+      lastName: String,
+      dateOfBirth: String,
+      dateOfDeath: String,
+      gender: String,
+      birthPlace: String,
+      burialSite: String,
+      img: String,
+      fatherId: String,
+      motherId: String,
+      pids: [String]  # Partner IDs to update
+    ): Person!
+
+    deletePerson(id: String!): Person   # Mutation to delete a person
   }
 `;
 

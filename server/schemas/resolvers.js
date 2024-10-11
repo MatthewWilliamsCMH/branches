@@ -45,8 +45,8 @@ const resolvers = {
 
     updatePerson: async (_, { id, firstName, middleName, lastName, dateOfBirth, dateOfDeath, gender, birthPlace, burialSite, img, fatherId, motherId, pids }) => {
       try {
-        const updatedPerson = await Person.findByIdAndUpdate(
-          id,
+      const updatedPerson = await Person.findOneAndUpdate(
+          {id: id},
           {
             firstName,
             middleName,
@@ -61,9 +61,9 @@ const resolvers = {
             motherId,
             pids,
           },
-          { new: true } // Return the updated document
+          { new: true, upsert: true } // Return the updated document
         );
-
+          console.log(updatedPerson);
         return updatedPerson; // Return the updated person
       } catch (error) {
         throw new Error('Error updating person');

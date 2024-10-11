@@ -1,9 +1,9 @@
 .footer {
-    background-color: #282c34;
+    background-color: #0c0a09;
     color: white;
     text-align: center;
     padding: 20px;
-    position: fixed;
+    position: relative;
     left: 0;
     bottom: 0;
     width: 100%;
