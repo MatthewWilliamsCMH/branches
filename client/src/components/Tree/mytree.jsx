@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import FamilyTree from "@balkangraph/familytree.js";
-import "./tree.css"
 
 // Define your GraphQL query to fetch persons
 const GET_PERSONS = gql`
@@ -26,7 +25,7 @@ const GET_PERSONS = gql`
 // Define the GraphQL mutation to update a person
 const UPDATE_PERSON = gql`
   mutation Mutation(
-    $updatePersonId: String
+    $updatePersonId: ID!
     $firstName: String
     $middleName: String
     $lastName: String
@@ -36,9 +35,9 @@ const UPDATE_PERSON = gql`
     $birthPlace: String
     $burialSite: String
     $img: String
-    $fatherId: String
-    $motherId: String
-    $pids: [String]
+    $fatherId: ID
+    $motherId: ID
+    $pids: [ID]
   ) {
     updatePerson(
       id: $updatePersonId
@@ -70,38 +69,6 @@ const UPDATE_PERSON = gql`
     }
   }
 `;
-
-// const ADD_PERSON = gql`
-// mutation Mutation(
-//     $firstName: String!, 
-//     $lastName: String!, 
-//     $middleName: String, 
-//     $dateOfBirth: String, 
-//     $dateOfDeath: String, 
-//     $gender: String, 
-//     $birthPlace: String, 
-//     $burialSite: String, 
-//     $img: String, 
-//     $fatherId: ID, 
-//     $motherId: ID, 
-//     $pids: [ID]) {
-//     createPerson(
-//         firstName: $firstName, 
-//         lastName: $lastName, 
-//         middleName: $middleName, 
-//         dateOfBirth: $dateOfBirth, 
-//         dateOfDeath: $dateOfDeath, 
-//         gender: $gender, 
-//         birthPlace: $birthPlace, 
-//         burialSite: $burialSite, 
-//         img: $img, 
-//         fatherId: $fatherId, 
-//         motherId: $motherId, 
-//         pids: $pids) {
-      
-//     }
-//   }
-//   `;
 
 const Tree = () => {
   const divRef = useRef(null);
@@ -177,104 +144,68 @@ const Tree = () => {
         console.log('+++++ Updated node! ++++');
         console.log(args);
 
-        if(args.addNodesData.length > 0) {
-            const newPersonData = {
-                // updatePersonId: args.updateNodesData[0].id
-              updatePersonId: args.addNodesData[0].id,
-              gender: args.addNodesData[0].gender,
-              fatherId: args.addNodesData[0].fid || null,
-              motherId: args.addNodesData[0].mid || null,
-              pids: args.addNodesData[0].pids || [],
-            };
-
-            try {
-                const { data } = await updatePerson({
-                  variables: newPersonData,
-                });
-                console.log("Person added:", data.updatePerson);
-      
-                // Optionally, refresh the FamilyTree nodes after update
-                treeRef.current.load(treePersons);
-              } catch (error) {
-                console.error("Error updating person:", error);
-              }
-            
-
-
-
-        } else if (args.updateNodesData.length > 0) {
-
-            const updatedPersonData = {
-                // updatePersonId: args.updateNodesData[0].id
-              updatePersonId: args.updateNodesData[0].id,
-              firstName: args.updateNodesData[0].name.split(" ")[0],
-              lastName: args.updateNodesData[0].name.split(" ")[1],
-              gender: args.updateNodesData[0].gender,
-              img: args.updateNodesData[0].img || "",
-              fatherId: args.updateNodesData[0].fid || null,
-              motherId: args.updateNodesData[0].mid || null,
-              pids: args.updateNodesData[0].pids || []
-            };
-    
-            // Call the mutation to update the person
-            try {
-              const { data } = await updatePerson({
-                variables: updatedPersonData,
-              });
-              console.log("Person updated:", data.updatePerson);
-    
-              // Optionally, refresh the FamilyTree nodes after update
-              treeRef.current.load(treePersons);
-            } catch (error) {
-              console.error("Error updating person:", error);
-            }
-
-        }
-    
-
-        // UPDATING A PERSON
-
         // Extract data from args and map them to mutation variables
-        
+        const updatedPersonData = {
+          updatePersonId: args.node.id,
+          firstName: args.node.name.split(" ")[0],
+          lastName: args.node.name.split(" ")[1],
+          gender: args.node.gender,
+          img: args.node.img || "",
+          fatherId: args.node.fid || null,
+          motherId: args.node.mid || null,
+          pids: args.node.pids || [],
+        };
+
+        // Call the mutation to update the person
+        try {
+          const { data } = await updatePerson({
+            variables: updatedPersonData,
+          });
+          console.log("Person updated:", data.updatePerson);
+
+          // Optionally, refresh the FamilyTree nodes after update
+          treeRef.current.load(treePersons);
+        } catch (error) {
+          console.error("Error updating person:", error);
+        }
       });
 
-      treeRef.current.editUI.on('element-btn-click', function (sender, args) {
-        FamilyTree.fileUploadDialog(function(file) {
-          const data = new FormData();
-          data.append("files", file);
+      let currentDetailsId = null; // Use a local variable to store the ID
 
-          const mutation = `
-            mutation($file: Upload!) {
-              uploadPhoto(file: $file){
-                url
-              }
-            }
-          `;
+      // Capture the node ID when a node is clicked
+      treeRef.current.onNodeClick((sender, args) => {
+        currentDetailsId = sender.node.id; // Update local variable
+        console.log("Node clicked, ID set to:", currentDetailsId);
+      });
 
-//Two problems below: filename is not being passed to fetch, and it's looking at 3000, not 3001
-          fetch("/assets", {
-            method: "POST",
-            headers: {
-              "Accept": "application/json",
-            },
-            body: data
-          })
-          .then(response => response.json())
-          .then(responseData => {
-            if (responseData.data.uploadPhoto) {
-              const url = responseData.data.uploadPhoto.url;
-              args.input.value = url;
-              sender.setAvatar(url)
+      // Handle the file upload event
+      treeRef.current.editUI.on('element-btn-click', function () {
+        FamilyTree.fileUploadDialog(async function(file) {
+
+          // Prepare the updatedPersonData
+          const updatedPersonData = {
+            updatePersonId: currentDetailsId,
+            img: file.name
+          };
+          console.log(updatedPersonData)
+
+          if (currentDetailsId) {
+            try {
+              const { data } = await updatePerson({
+                variables: updatedPersonData
+              });
+              console.log("Avatar updated:", data.updatePerson);
+            } catch (error) {
+              console.error("Loading the avatar failed", error);
             }
-          })
-          .catch(error => {
-            console.error("Error uploading photo:", error);
-          });
+          } else {
+            console.error("Person ID not found");
+          }
+          console.log(updatedPersonData);
         });
-      })
+      });
     }
   }, [loading, error, data, updatePerson]);
-
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
