@@ -2,7 +2,8 @@ const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
-const jwt = require('jsonwebtoken');
+const { authMiddleware } = require('./utils/auth');
+
 const bcrypt = require('bcryptjs');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
@@ -77,7 +78,7 @@ const startApolloServer = async () => {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '2h' });
 
       // Send the token back to the client
       res.json({ token });
@@ -98,7 +99,7 @@ const startApolloServer = async () => {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
     app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+      res.sendFile(path.join(__dirname, '../3client/dist/index.html'));
     });
   } 
 
