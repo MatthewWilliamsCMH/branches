@@ -3,12 +3,14 @@ const multer = require('multer');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
-
+const cors = require('cors');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+app.use(cors());
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -32,7 +34,7 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  app.post("/upload", upload.single("avatar"), function (req, res, next) {
+  app.post("/assets", upload.single("avatar"), function (req, res, next) {
     res.json({ fileUrl: `/assets/${req.file.filename}` });
   });
 

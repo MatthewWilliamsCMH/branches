@@ -170,39 +170,70 @@ const Tree = () => {
         }
       });
 
-      let currentDetailsId = null; // Use a local variable to store the ID
+// If I move this into the editUI block below, will this work?
+      const uploadFile = async (file) => {
+        const formData = new FormData();
+        formData.append('avatar', file);
 
-      // Capture the node ID when a node is clicked
-      treeRef.current.onNodeClick((sender, args) => {
-        currentDetailsId = sender.node.id; // Update local variable
-        console.log("Node clicked, ID set to:", currentDetailsId);
-      });
+        try {
+          const response = await fetch("http://localhost:3001/assets", {
+            method: "POST",
+            body: formData,
+          });
 
-      // Handle the file upload event
-      treeRef.current.editUI.on('element-btn-click', function () {
+
+          if (!response.ok) {
+            throw new Error("File upload failed");
+          }
+
+          const data = await response.json();
+          return data.fileUrl;
+        }
+        catch (error) {
+          console.error("Error uploading file: ", error);
+          throw error;
+        }
+      }
+
+      treeRef.current.editUI.on("element-btn-click", function() {
         FamilyTree.fileUploadDialog(async function(file) {
-
-          // Prepare the updatedPersonData
-          const updatedPersonData = {
-            updatePersonId: currentDetailsId,
-            img: file.name
-          };
-          console.log(updatedPersonData)
-
-          if (currentDetailsId) {
+          if (currentDetailsIdRef) {
             try {
+              const fileUrl = await uploadFile(file);
+              const updatedPersonData = {
+                updatePersonId: currentDetailsIdRef,
+                img: fileUrl
+              };
+//It's getting to here and then failing.
+console.log(updatedPersonData)
               const { data } = await updatePerson({
                 variables: updatedPersonData
               });
-              console.log("Avatar updated:", data.updatePerson);
-            } catch (error) {
-              console.error("Loading the avatar failed", error);
+            
+
+              console.log ("Avatar updated: ", data.updatedPerson);
+
+              treeRef.current.updateNode({
+                id: currentDetailsIdRef,
+                img: fileUrl
+              });
             }
-          } else {
+            catch (error) {
+              console.error("Avatar update failed: ", error);
+            }
+          }
+          else {
             console.error("Person ID not found");
           }
-          console.log(updatedPersonData);
         });
+      });
+
+      let currentDetailsIdRef = null; // Use a local variable to store the ID
+ 
+
+      // Capture the node ID when a node is clicked
+      treeRef.current.onNodeClick((sender, args) => {
+        currentDetailsIdRef = sender.node.id; // Update local variable
       });
     }
   }, [loading, error, data, updatePerson]);
@@ -216,3 +247,5 @@ const Tree = () => {
 };
 
 export default Tree;
+
+let currentDetailsId = null; // Use a local variable to store the ID
