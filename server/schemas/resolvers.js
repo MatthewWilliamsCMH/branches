@@ -63,7 +63,6 @@ const resolvers = {
           },
           { new: true, upsert: true } // Return the updated document
         );
-          console.log(updatedPerson);
         return updatedPerson; // Return the updated person
       } catch (error) {
         throw new Error('Error updating person');

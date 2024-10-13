@@ -124,7 +124,7 @@ const Tree = () => {
               { type: 'textbox', label: 'Birth Place', binding: 'birthPlace' },
               { type: 'textbox', label: 'Burial Site', binding: 'burialSite' },
             ],
-            { type: 'textbox', label: 'Photo Url', binding: 'ImgUrl', btn: 'Upload' }
+            { type: 'textbox', label: 'Photo Url', binding: 'img', btn: 'Upload' }
           ],
           buttons: {
             edit: {
@@ -170,7 +170,6 @@ const Tree = () => {
         }
       });
 
-// If I move this into the editUI block below, will this work?
       const uploadFile = async (file) => {
         const formData = new FormData();
         formData.append('avatar', file);
@@ -205,7 +204,7 @@ const Tree = () => {
                 img: fileUrl
               };
 //It's getting to here and then failing.
-console.log(updatedPersonData)
+// console.log(updatedPersonData)
               const { data } = await updatePerson({
                 variables: updatedPersonData
               });
