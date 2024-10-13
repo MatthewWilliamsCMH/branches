@@ -3,20 +3,21 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   type Person {
     id: String
-    firstName: String!
+    firstName: String
     middleName: String
-    lastName: String!
+    lastName: String
     dateOfBirth: String
     dateOfDeath: String
     gender: String
     birthPlace: String
     burialSite: String
     img: String
-    fatherId: ID
-    motherId: ID
-    pids: [ID]  # Partner IDs
+    fatherId: String
+    motherId: String
+    pids: [String]  # Partner IDs
   }
-    type User {
+
+  type User {
     id: ID!
     name: String!
     email: String!
@@ -34,18 +35,18 @@ const typeDefs = gql`
 
   type Mutation {
     createPerson(
-      firstName: String!,
+      firstName: String,
       middleName: String,
-      lastName: String!,
+      lastName: String,
       dateOfBirth: String,
       dateOfDeath: String,
       gender: String,
       birthPlace: String,
       burialSite: String,
       img: String,
-      fatherId: ID,
-      motherId: ID,
-      pids: [ID]  # Partner IDs for new person
+      fatherId: String,
+      motherId: String,
+      pids: [String]  # Partner IDs for new person
     ): Person!
 
     updatePerson(
@@ -59,12 +60,12 @@ const typeDefs = gql`
       birthPlace: String,
       burialSite: String,
       img: String,
-      fatherId: ID,
-      motherId: ID,
-      pids: [ID]  # Partner IDs to update
+      fatherId: String,
+      motherId: String,
+      pids: [String]  # Partner IDs to update
     ): Person!
 
-    deletePerson(id: ID!): Person   # Mutation to delete a person
+    deletePerson(id: String!): Person   # Mutation to delete a person
 
     signup(
       name: String!,

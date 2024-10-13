@@ -9,7 +9,7 @@ function Header() {
     <header className='header'>
         
         <div>Branches 
-          <img src= {image1} />
+          <img src= {image1} style={{ position: 'relative', left: '10px', bottom: '-10px' }}/>
         </div>
         
 
