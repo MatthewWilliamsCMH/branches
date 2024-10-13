@@ -241,7 +241,7 @@ const Tree = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div id="tree" ref={divRef} style={{ width: "100%", height: "100vh" }} />
+    <div id="tree" ref={divRef} /> //matthew moved sizing into css file
   );
 };
 

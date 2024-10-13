@@ -1,0 +1,42 @@
+html {
+    height: calc(100vh - 7rem);
+}
+body {
+    margin: 0px;
+    background-color: #0F0D0D; /*mattew changed from 2e2e2e to match background of tree */
+}
+
+svg.tommy .node.male>rect {
+    fill: #1e3a8a;
+}
+svg.tommy .node.female>rect {
+    fill: #86198f;
+}
+
+#tree {
+    height: calc(100vh - 12rem); /*matthew made this adjustment so the save button and mini map are always above the footer */
+}
+/* I think this background image is too busy. Can we change it's opacity to, like 0.2? */
+#tree>svg {
+    /* background-color: #2E2E2E; */ /*matthew commented this out; it seemed not to be doing anything*/
+    background-image: url("../../assets/family_tree_background.png");
+}
+
+#base_tree_menu path, #base_tree_menu ellipse {
+    fill: #0ea5e9
+}
+[data-l-id] path {
+    stroke: #64748b;
+}
+
+.bft-edit-form-fields {
+    background-color:#0F0D0D; /*matthew added */
+}
+
+#tree > form.female > div:nth-child(1) > div.bft-edit-form-header {
+    background-color:#86198f; /* matthew added */
+}
+
+#tree > form.male > div:nth-child(1) > div.bft-edit-form-header {
+    background-color:#1e3a8a; /* matthew added */
+}
