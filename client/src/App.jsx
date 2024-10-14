@@ -23,10 +23,17 @@ const GET_PERSONS = gql`
 `;
 
 // Define the Apollo Client
+// const client = new ApolloClient({
+//   uri: 'http://localhost:3000/graphql', // Update to your server's GraphQL endpoint
+//   cache: new InMemoryCache(),
+// });
+
+//claude.ai suggested this for render deployment; I left localhost at 3000 where claude put it at 3001
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql', // Update to your server's GraphQL endpoint
+  uri: process.env.NODE_ENV === 'production' 
+    ? 'https://branches-bv83.onrender.com/graphql'  // Production URL
+    : 'http://localhost:3000/graphql',  // Development URL
   cache: new InMemoryCache(),
-});
 
 // Create a separate component for querying and displaying data
 function Persons() {
