@@ -3,7 +3,7 @@ const multer = require('multer');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
-const cors = require('cors');
+// const cors = require('cors');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 require('dotenv').config();
@@ -12,7 +12,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -27,7 +27,7 @@ const upload = multer({ storage: storage });
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers
 });
 
 const startApolloServer = async () => {
@@ -51,6 +51,10 @@ const startApolloServer = async () => {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   } 
+
+  app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  });
 
   db.once('open', () => {
     app.listen(PORT, () => {
