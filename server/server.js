@@ -2,10 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
-const path = require('path');
-const { authMiddleware } = require('./utils/auth');
 
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+
+const cors = require('cors');
+
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const User = require('./models/User'); // Adjust path as per your structure

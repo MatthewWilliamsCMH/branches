@@ -16,7 +16,8 @@ const typeDefs = gql`
     motherId: String
     pids: [String]  # Partner IDs
   }
-    type User {
+
+  type User {
     id: ID!
     name: String!
     email: String!
@@ -64,8 +65,7 @@ const typeDefs = gql`
       pids: [String]  # Partner IDs to update
     ): Person!
 
-<<<<<<< HEAD
-    deletePerson(id: ID!): Person   # Mutation to delete a person
+    deletePerson(id: String!): Person   # Mutation to delete a person
 
     signup(
       name: String!,
@@ -77,9 +77,9 @@ const typeDefs = gql`
       email: String!,
       password: String!
     ): AuthPayload!                 # Login mutation
-=======
+
     deletePerson(id: String!): Person   # Mutation to delete a person
->>>>>>> 7278c329594fe7cecfef7faa64043cb4e74fe3ab
+
   }
 `;
 
