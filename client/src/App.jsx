@@ -33,7 +33,8 @@ const client = new ApolloClient({
   uri: process.env.NODE_ENV === 'production' 
     ? 'https://branches-bv83.onrender.com/graphql'  // Production URL
     : 'http://localhost:3000/graphql',  // Development URL
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache()
+})
 
 // Create a separate component for querying and displaying data
 function Persons() {
