@@ -22,7 +22,7 @@ const GET_PERSONS = gql`
   }
 `;
 
-Define the Apollo Client
+// Define the Apollo Client
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql', // Update to your server's GraphQL endpoint
   cache: new InMemoryCache(),
