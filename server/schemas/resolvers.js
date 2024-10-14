@@ -1,4 +1,9 @@
 const Person = require('../models/Person'); // Adjust the path as necessary
+const bcrypt = require('bcryptjs');
+const { signToken, AuthenticationError } = require('../utils/auth');
+const User = require('../models/User'); // Adjust the path as necessary
+
+
 
 const resolvers = {
   Query: {
@@ -16,9 +21,22 @@ const resolvers = {
         throw new Error('Error fetching person');
       }
     },
-  },
+     // Protected route (you can add this to protected areas if needed)
+  //    protectedData: async (_, args, context) => {
+  //     // Check if user is authenticated
+  //     if (!context.user) {
+  //       throw new AuthenticationError('You need to be logged in!');
+  //     }
+
+  //     // If authenticated, return some data or proceed with logic
+  //     return { message: 'This is protected data!' };
+  // },
+
+},
 
   Mutation: {
+
+    
     createPerson: async (_, { firstName, middleName, lastName, dateOfBirth, dateOfDeath, gender, birthPlace, burialSite, img, fatherId, motherId, pids }) => {
       try {
         const newPerson = new Person({
@@ -77,7 +95,47 @@ const resolvers = {
         throw new Error('Error deleting person');
       }
     },
-  },
-};
+        // User sign-up mutation
+        signup: async (parent,args) => {
+          try {
+           const user =await User.create(args)
+           const token = signToken(user)
+           console.log({token,user})
+           return {token,user}
+          } catch (error) {
+            console.error(error)
+            throw AuthenticationError
+
+          }
+        },
+    
+        // User login mutation
+        login: async (_, { email, password }) => {
+          try {
+            // Find the user by email
+            const user = await User.findOne({ email });
+            if (!user) {
+              throw new Error('User not found');
+            }
+    
+            // Validate password
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) {
+              throw new Error('Invalid password');
+            }
+    
+            // Generate JWT token
+            const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
+              expiresIn: '1h',
+            });
+    
+            return { token };
+          } catch (error) {
+            throw new Error('Error logging in user');
+          }
+        },
+      },
+    };
+  
 
 module.exports = resolvers;
