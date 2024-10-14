@@ -1,9 +1,9 @@
 const Person = require('../models/Person'); // Adjust the path as necessary
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const { signToken, AuthenticationError } = require('../utils/auth');
 const User = require('../models/User'); // Adjust the path as necessary
 
-const { AuthenticationError } = require('apollo-server-express');
+
 
 const resolvers = {
   Query: {
@@ -96,34 +96,16 @@ const resolvers = {
       }
     },
         // User sign-up mutation
-        signup: async (_, { email, password, name }) => {
+        signup: async (parent,args) => {
           try {
-            // Check if the user already exists
-            const existingUser = await User.findOne({ email });
-            if (existingUser) {
-              throw new Error('User already exists');
-            }
-    
-            // Hash the password before saving
-            const hashedPassword = await bcrypt.hash(password, 10);
-    
-            // Create a new user
-            const newUser = new User({
-              email,
-              password: hashedPassword,
-              name
-            });
-    
-            await newUser.save();
-    
-            // Generate a JWT token for the new user
-            const token = jwt.sign({ id: newUser._id, email: newUser.email }, JWT_SECRET, {
-              expiresIn: '1h',
-            });
-    
-            return { token };
+           const user =await User.create(args)
+           const token = signToken(user)
+           console.log({token,user})
+           return {token,user}
           } catch (error) {
-            throw new Error('Error signing up user');
+            console.error(error)
+            throw AuthenticationError
+
           }
         },
     

@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-
+import { SIGNUP_MUTATION } from '../../utils/mutations';
+import { useMutation } from '@apollo/client';
+import Auth from '../../utils/auth'
 const SignupForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null); // For error messages
   const [message, setMessage] = useState(''); // For success message
+  const [signUp] = useMutation(SIGNUP_MUTATION)
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,22 +21,19 @@ const SignupForm = () => {
     }
 
     try {
-      const response = await fetch('/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Sign up failed');
+     const signUpResponse = await signUp({
+      variables:{
+        name:name,
+        email:email,
+        password:password
       }
+     })
+     
+     const token = signUpResponse.data.signup.token
+     Auth.login(token)
 
-      const data = await response.json();
-      localStorage.setItem('token', data.token); // Store JWT token in localStorage
-      setMessage('Sign up successful! You can now log in.');
     } catch (error) {
+      console.log(error)
       setError(error.message); // Set error message if sign-up fails
     }
   };

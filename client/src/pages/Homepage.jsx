@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import image1 from '../../assets/Tree.png';
+
+import image1 from '../assets/Tree.png';
+
 import Auth from '../utils/auth.js';
 import LoginForm from '../components/Login/login.jsx';
 import SignupForm from '../components/SignUp/signup.jsx';
@@ -28,7 +29,7 @@ const HomePage = () => {
       ) : (
         <div>
           {/* Toggle button for switching between forms */}
-          <button onClick={toggleForm} style={styles.toggleButton}>
+          <button onClick={toggleForm}>
             {isLogin ? 'Switch to Sign Up' : 'Switch to Login'}
           </button>
 

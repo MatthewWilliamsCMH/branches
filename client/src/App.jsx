@@ -1,10 +1,12 @@
 // client/src/App.jsx
 // import './App.css';
-import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql,createHttpLink } from '@apollo/client';
+import {setContext} from '@apollo/client/link/context'
 import React from 'react';
 import FamilyTree from './components/Tree/mytree';
 import Header from '../src/components/Header/index';
 import Footer from '../src/components/Footer/index';
+import Homepage from '../src/pages/Homepage'
 
 //NOT SURE WHY THIS IS HERE; WHEN I COMMENT IT OUT, THE APP BREAKS, BUT WHEN I ADD ANOTHER PARAMETER TO PULL (LIKE BIRTHPLACE), NOTHING IN THE APP CHANGES
 // Define the GET_PERSONS query
@@ -23,11 +25,11 @@ const GET_PERSONS = gql`
   }
 `;
 
-// Define the Apollo Client
-const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql', // Update to your server's GraphQL endpoint
-  cache: new InMemoryCache(),
-});
+// // Define the Apollo Client
+// const client = new ApolloClient({
+//   uri: 'http://localhost:3000/graphql', // Update to your server's GraphQL endpoint
+//   cache: new InMemoryCache(),
+// });
 
 // Create a separate component for querying and displaying data
 function Persons() {
@@ -50,13 +52,31 @@ function Persons() {
   return <FamilyTree nodes={nodes} />;
 }
 
+
+const httpLink= createHttpLink ({
+  uri:'/graphql'
+})
+
+const authLink = setContext((_,{headers}) => {
+  const token = localStorage.getItem('id_token')
+  return {
+    headers: {
+      ...headers,
+      authorization:token ? `bearer ${token}`: '',
+    }
+  }
+})
+const client=new ApolloClient({
+  link:authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+})
+
+
 function App() {
   return (
     <ApolloProvider client={client}>
     <Header /> 
-    <div className="flex-column justify-center align-center min-100-vh bg-primary" style={{ height: '100%' }}>
-      <Persons /> 
-    </div>
+    <Homepage/>
     <Footer /> 
   </ApolloProvider>
   );
