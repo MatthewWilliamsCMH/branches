@@ -1,5 +1,4 @@
 // client/src/App.jsx
-// import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql } from '@apollo/client';
 import React from 'react';
 import FamilyTree from './components/Tree/mytree';
