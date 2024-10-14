@@ -43,7 +43,7 @@ function Persons() {
     pids: [person.fatherId, person.motherId].filter(pid => pid), // Parent IDs
     name: `${person.firstName} ${person.lastName}`,
     gender: person.gender,
-    img: person.img || 'https://example.com/default-image.jpg', // Use the person's image or provide a default
+    img: person.img || 'https://example.com/default-image.jpg', // Use the person's image or provide a default; THIS IS NOT THE CORRECT IMAGE
   }));
 
   return <FamilyTree nodes={nodes} />;
