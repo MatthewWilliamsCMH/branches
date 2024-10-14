@@ -79,9 +79,8 @@ const resolvers = {
             motherId,
             pids,
           },
-          { new: true } // Return the updated document
+          { new: true, upsert: true } // Return the updated document
         );
-
         return updatedPerson; // Return the updated person
       } catch (error) {
         throw new Error('Error updating person');

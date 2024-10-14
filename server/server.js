@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
@@ -9,11 +10,22 @@ const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const User = require('./models/User'); // Adjust path as per your structure
 
-
-
-
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+app.use(cors());
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "public/assets/"))
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname))
+  }
+});
+
+const upload = multer({ storage: storage });
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -53,11 +65,17 @@ const startApolloServer = async () => {
   
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  
+
+  app.post("/assets", upload.single("avatar"), function (req, res, next) {
+    res.json({ fileUrl: `/assets/${req.file.filename}` });
+  });
+
   app.use('/graphql', expressMiddleware(server));
   app.use(express.static(path.join(__dirname, 'public')));
 
   //
+
+  
 
   app.post('/login', async (req, res) => {
     const { email, password } = req.body;

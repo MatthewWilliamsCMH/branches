@@ -3,18 +3,18 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   type Person {
     id: String
-    firstName: String!
+    firstName: String
     middleName: String
-    lastName: String!
+    lastName: String
     dateOfBirth: String
     dateOfDeath: String
     gender: String
     birthPlace: String
     burialSite: String
     img: String
-    fatherId: ID
-    motherId: ID
-    pids: [ID]  # Partner IDs
+    fatherId: String
+    motherId: String
+    pids: [String]  # Partner IDs
   }
     type User {
     id: ID!
@@ -34,18 +34,18 @@ const typeDefs = gql`
 
   type Mutation {
     createPerson(
-      firstName: String!,
+      firstName: String,
       middleName: String,
-      lastName: String!,
+      lastName: String,
       dateOfBirth: String,
       dateOfDeath: String,
       gender: String,
       birthPlace: String,
       burialSite: String,
       img: String,
-      fatherId: ID,
-      motherId: ID,
-      pids: [ID]  # Partner IDs for new person
+      fatherId: String,
+      motherId: String,
+      pids: [String]  # Partner IDs for new person
     ): Person!
 
     updatePerson(
@@ -59,11 +59,12 @@ const typeDefs = gql`
       birthPlace: String,
       burialSite: String,
       img: String,
-      fatherId: ID,
-      motherId: ID,
-      pids: [ID]  # Partner IDs to update
+      fatherId: String,
+      motherId: String,
+      pids: [String]  # Partner IDs to update
     ): Person!
 
+<<<<<<< HEAD
     deletePerson(id: ID!): Person   # Mutation to delete a person
 
     signup(
@@ -76,6 +77,9 @@ const typeDefs = gql`
       email: String!,
       password: String!
     ): AuthPayload!                 # Login mutation
+=======
+    deletePerson(id: String!): Person   # Mutation to delete a person
+>>>>>>> 7278c329594fe7cecfef7faa64043cb4e74fe3ab
   }
 `;
 

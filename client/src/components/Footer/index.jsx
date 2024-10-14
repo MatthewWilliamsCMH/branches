@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css';
+import './footer.css';
 
 const Footer = () => {
   return (
@@ -27,7 +27,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="footer-link"
         >
-         Matthews's GitHub
+         Matthew's GitHub
         </a>
         <a
           href="https://github.com/Bluf00"
