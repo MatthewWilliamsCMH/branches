@@ -6,7 +6,7 @@ const path = require('path');
 // const cors = require('cors');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
-require('dotenv').config();
+// require('dotenv').config();
 
 
 const PORT = process.env.PORT || 3001;
@@ -47,9 +47,9 @@ const startApolloServer = async () => {
     res.send('Welcome to the API');
   });
 
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/dist')));
-  }
+  // if (process.env.NODE_ENV === 'production') {
+  //   app.use(express.static(path.join(__dirname, '../client/dist')));
+  // }
   
   db.once('open', () => {
     app.listen(PORT, () => {
