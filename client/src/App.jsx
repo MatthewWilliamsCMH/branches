@@ -1,7 +1,7 @@
 // client/src/App.jsx
-import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql } from '@apollo/client';
+// import './App.css';
+import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql,createHttpLink } from '@apollo/client';
 import {setContext} from '@apollo/client/link/context'
-
 import React from 'react';
 import FamilyTree from './components/Tree/mytree';
 import Header from '../src/components/Header/index';
@@ -25,11 +25,11 @@ const GET_PERSONS = gql`
   }
 `;
 
-// Define the Apollo Client
-const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
-  cache: new InMemoryCache()
-});
+// // Define the Apollo Client
+// const client = new ApolloClient({
+//   uri: 'http://localhost:3000/graphql', // Update to your server's GraphQL endpoint
+//   cache: new InMemoryCache(),
+// });
 
 // Create a separate component for querying and displaying data
 function Persons() {
@@ -46,11 +46,12 @@ function Persons() {
     pids: [person.fatherId, person.motherId].filter(pid => pid), // Parent IDs
     name: `${person.firstName} ${person.lastName}`,
     gender: person.gender,
-    img: person.img || 'https://example.com/default-image.jpg', // Use the person's image or provide a default; THIS IS NOT THE CORRECT IMAGE
+    img: person.img || 'https://example.com/default-image.jpg', // Use the person's image or provide a default
   }));
 
   return <FamilyTree nodes={nodes} />;
 }
+
 
 const httpLink= createHttpLink ({
   uri:'/graphql'
@@ -73,14 +74,11 @@ const client=new ApolloClient({
 
 function App() {
   return (
-    <div>
-      <ApolloProvider client={client}>
-      <Header />
-      <Homepage />
-      <Persons /> 
-    </div>
+    <ApolloProvider client={client}>
+    <Header /> 
+    <Homepage/>
     <Footer /> 
-  </ApolloProvider>
+    </ApolloProvider>
   );
 }
 

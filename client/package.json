@@ -14,13 +14,13 @@
     "@apollo/client": "^3.7.14",
     "@balkangraph/familytree.js": "^1.9.43",
     "graphql": "^16.6.0",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "reactflow": "^11.11.4",
-    "web-vitals": "^2.1.4",
-    "jwt-decode": "3.1.2"
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
