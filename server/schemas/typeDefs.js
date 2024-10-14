@@ -78,7 +78,7 @@ const typeDefs = gql`
       password: String!
     ): AuthPayload!                 # Login mutation
 
-    deletePerson(id: String!): Person   # Mutation to delete a person
+   
 
   }
 `;

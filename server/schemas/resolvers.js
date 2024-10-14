@@ -2,7 +2,7 @@ const Person = require('../models/Person'); // Adjust the path as necessary
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User'); // Adjust the path as necessary
-const Person = require('../models/Person'); // Already present
+
 const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
@@ -22,15 +22,15 @@ const resolvers = {
       }
     },
      // Protected route (you can add this to protected areas if needed)
-     protectedData: async (_, args, context) => {
-      // Check if user is authenticated
-      if (!context.user) {
-        throw new AuthenticationError('You need to be logged in!');
-      }
+  //    protectedData: async (_, args, context) => {
+  //     // Check if user is authenticated
+  //     if (!context.user) {
+  //       throw new AuthenticationError('You need to be logged in!');
+  //     }
 
-      // If authenticated, return some data or proceed with logic
-      return { message: 'This is protected data!' };
-  },
+  //     // If authenticated, return some data or proceed with logic
+  //     return { message: 'This is protected data!' };
+  // },
 
 },
 
@@ -96,7 +96,7 @@ const resolvers = {
       }
     },
         // User sign-up mutation
-        signUp: async (_, { email, password, name }) => {
+        signup: async (_, { email, password, name }) => {
           try {
             // Check if the user already exists
             const existingUser = await User.findOne({ email });

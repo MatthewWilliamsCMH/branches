@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import image1 from '../../assets/Tree.png';
-import Auth from '../../utils/auth';
+import Auth from '../utils/auth.js';
 import LoginForm from '../components/Login/login.jsx';
 import SignupForm from '../components/SignUp/signup.jsx';
 

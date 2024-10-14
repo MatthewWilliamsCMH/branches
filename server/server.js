@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
-
+const path = require('path') 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
