@@ -2,8 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
-const path = require('path');
-// const cors = require('cors');
+const path = require('path') 
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+const cors = require('cors');
+
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const User = require('./models/User'); // Adjust path as per your structure
@@ -12,7 +16,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -27,7 +31,19 @@ const upload = multer({ storage: storage });
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: ({ req }) => {
+    const token = req.headers.authorization || '';
+    if (token) {
+      try {
+        const user = jwt.verify(token, JWT_SECRET);
+        return { user };
+      } catch (err) {
+        console.log('Invalid token');
+      }
+    }
+    return null;
+  },
 });
 
 const authenticateJWT = (req, res, next) => {
@@ -96,23 +112,19 @@ const startApolloServer = async () => {
 
 
   // if we're in production, serve client/dist as static assets
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/dist')));
+  // if (process.env.NODE_ENV === 'production') {
+  //   app.use(express.static(path.join(__dirname, '../client/dist')));
 
     app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+      res.sendFile(path.join(__dirname, '../3client/dist/index.html'));
     });
-  } 
-
-  app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-  });
+ 
 
   db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
-    });
+    })
   });
 };
 
