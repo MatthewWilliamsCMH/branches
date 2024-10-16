@@ -16,7 +16,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Welcome to the Family Tree App</h1>
+      <h1>Welcome to Branches</h1>
       <img src={image1} alt="Tree" style={{ width: '300px', height: 'auto' }} />
       
       {/* Check if user is already authenticated */}

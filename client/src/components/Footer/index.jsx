@@ -5,13 +5,13 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-links">
-      <a
+        <a
           href="https://github.com/schneibley"
           target="_blank"
           rel="noopener noreferrer"
           className="footer-link"
         >
-         Brad's GitHub
+          Brad&rsquo;s&nbsp;GitHub
         </a>
         <a
           href="https://github.com/jameswhatcott"
@@ -19,7 +19,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="footer-link"
         >
-         James's GitHub
+          James&rsquo;s&nbsp;GitHub
         </a>
         <a
           href="https://github.com/MatthewWilliamsCMH"
@@ -27,7 +27,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="footer-link"
         >
-         Matthew's GitHub
+          Matthew&rsquo;s&nbsp;GitHub
         </a>
         <a
           href="https://github.com/Bluf00"
@@ -35,7 +35,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="footer-link"
         >
-         Michael's GitHub
+          Michael&rsquo;s&nbsp;GitHub
         </a>
         <a
           href="https://github.com/BrianMN11"
@@ -43,7 +43,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="footer-link"
         >
-         Brian's GitHub
+          Brian&rsquo;s&nbsp;GitHub
         </a>
         <a
           href="https://github.com/mkeeney42?tab=repositories"
@@ -51,7 +51,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="footer-link"
         >
-         Matt's GitHub
+          Matt's GitHub
         </a>
       </div>
       <p className="footer-text">&copy; {new Date().getFullYear()} Coding better than yesterday</p>
