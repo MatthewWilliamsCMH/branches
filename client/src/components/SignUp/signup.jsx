@@ -41,7 +41,7 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Sign Up</h2>
+      <h3>Sign Up</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
       {message && <p style={{ color: 'green' }}>{message}</p>} {/* Display success message */}
       

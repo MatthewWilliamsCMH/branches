@@ -26,19 +26,39 @@
   font-size: 14px;
 }
 
-@media only screen and (max-width: 768px) {
-  .footer {
-    position: absolute;
-    bottom: 0;
-  }
+@media only screen and (max-width: 700px) {
+    .footer {
+        position: relative;
+        padding: 15px 10px;
+    }
 
-  .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    column-count: 2
-  }
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-  .footer-link {
-    width: 44%;
-  }
+    .footer-link {
+        width: 48%;
+        margin: 5px;
+    }
+}
+
+@media only screen and (max-width: 000px) {
+    .footer {
+        position: relative;
+        padding: 10px 5px;
+        bottom: 0;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .footer-link {
+        width: 44%;
+        margin: 5px;
+    }
 }
