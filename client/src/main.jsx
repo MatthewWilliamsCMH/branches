@@ -3,12 +3,18 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import React from 'react';
 
 import App from './App.jsx';
+import Tree from './components/Tree/mytree.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
   },
+  {
+    path: '/Tree',
+    element: <Tree/>
+  }
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

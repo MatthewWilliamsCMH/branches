@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SIGNUP_MUTATION } from '../../utils/mutations';
 import { useMutation } from '@apollo/client';
 import Auth from '../../utils/auth'
+import {Navigate} from 'react-router-dom'
 import './signup.css'
 const SignupForm = () => {
   const [name, setName] = useState('');
@@ -32,6 +33,15 @@ const SignupForm = () => {
      
      const token = signUpResponse.data.signup.token
      Auth.login(token)
+
+     setTimeout(()=>{
+      Navigate('/Tree')
+     }, 2000)
+
+     
+
+
+
 
     } catch (error) {
       console.log(error)

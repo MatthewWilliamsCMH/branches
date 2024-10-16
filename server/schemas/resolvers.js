@@ -97,7 +97,7 @@ const resolvers = {
     },
         // User sign-up mutation
         signup: async (parent,args) => {
-          console.log('args')
+          console.log('here is the ARGS', args)
           try {
            const user =await User.create(args)
            const token = signToken(user)
