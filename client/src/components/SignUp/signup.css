@@ -10,7 +10,12 @@ form {
 
 h2 {
     text-align: center;
-    color: #333;
+    color: #FFFFFF;
+}
+h3 {
+    text-align: center;
+    color: #090407;
+    font-size: 2rem;
 }
 
 input {
@@ -22,7 +27,7 @@ input {
 }
 
 button {
-    width: 100%;
+    width: auto;
     padding: 10px;
     background-color: #4CAF50;
     color: white;
