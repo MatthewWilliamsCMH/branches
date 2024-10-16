@@ -71,38 +71,6 @@ const UPDATE_PERSON = gql`
   }
 `;
 
-// const ADD_PERSON = gql`
-// mutation Mutation(
-//     $firstName: String!, 
-//     $lastName: String!, 
-//     $middleName: String, 
-//     $dateOfBirth: String, 
-//     $dateOfDeath: String, 
-//     $gender: String, 
-//     $birthPlace: String, 
-//     $burialSite: String, 
-//     $img: String, 
-//     $fatherId: ID, 
-//     $motherId: ID, 
-//     $pids: [ID]) {
-//     createPerson(
-//         firstName: $firstName, 
-//         lastName: $lastName, 
-//         middleName: $middleName, 
-//         dateOfBirth: $dateOfBirth, 
-//         dateOfDeath: $dateOfDeath, 
-//         gender: $gender, 
-//         birthPlace: $birthPlace, 
-//         burialSite: $burialSite, 
-//         img: $img, 
-//         fatherId: $fatherId, 
-//         motherId: $motherId, 
-//         pids: $pids) {
-      
-//     }
-//   }
-//   `;
-
 const Tree = () => {
   const divRef = useRef(null);
   const treeRef = useRef(null);

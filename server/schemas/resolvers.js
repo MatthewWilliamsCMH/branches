@@ -21,17 +21,6 @@ const resolvers = {
         throw new Error('Error fetching person');
       }
     },
-     // Protected route (you can add this to protected areas if needed)
-  //    protectedData: async (_, args, context) => {
-  //     // Check if user is authenticated
-  //     if (!context.user) {
-  //       throw new AuthenticationError('You need to be logged in!');
-  //     }
-
-  //     // If authenticated, return some data or proceed with logic
-  //     return { message: 'This is protected data!' };
-  // },
-
 },
 
   Mutation: {
@@ -141,15 +130,9 @@ login: async (parent, args) => {
     throw new AuthenticationError('Error logging in user');
   
 }
-          }
- 
-           }
-         };
-            
-          
-        
-      
-    
-  
+}
+
+}
+};
 
 module.exports = resolvers;
