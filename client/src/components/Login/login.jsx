@@ -37,10 +37,6 @@ const LoginForm = () => {
     }
   }
 
-
-  
-
-
   // Fetch protected data after login (if token exists)
   useEffect(() => {
     const fetchProtectedData = async () => {
