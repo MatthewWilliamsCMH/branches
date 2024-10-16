@@ -1,37 +1,45 @@
-import React, { useState, useEffect } from 'react'; // Ensure useEffect is imported
-
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { LOGIN_MUTATION } from '../../utils/mutations';
+import { useMutation } from '@apollo/client';
+import Auth from '../../utils/auth'
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null); // Error state for login failure
   const [message, setMessage] = useState(''); // Success message state
   const [protectedData, setProtectedData] = useState(null); // Store protected data
+  const [login] = useMutation(LOGIN_MUTATION)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Login failed');
+    
+      if (!email || !password) {
+        setError('All fields are required');
+        return;
       }
-
-      const data = await response.json();
-      localStorage.setItem('token', data.token); // Store token in localStorage
-      setMessage('Login successful!'); // Set success message
-
-      // Optionally, redirect the user or perform further actions here
+  
+      try {
+       const loginResponse = await login({
+        variables:{
+          email:email,
+          password:password
+        }
+       })
+       
+       const token = loginResponse.data.login.token
+       Auth.login(token)
     } catch (error) {
       setError(error.message); // Set error message if login fails
+
+      navigate('../myTree.jsx'); 
     }
-  };
+  }
+
+
+  
+
 
   // Fetch protected data after login (if token exists)
   useEffect(() => {
