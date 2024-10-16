@@ -97,6 +97,7 @@ const resolvers = {
     },
         // User sign-up mutation
         signup: async (parent,args) => {
+          console.log('args')
           try {
            const user =await User.create(args)
            const token = signToken(user)
@@ -110,32 +111,37 @@ const resolvers = {
         },
     
         // User login mutation
-        login: async (_, { email, password }) => {
+        login: async (parent, args) => {
           try {
+            const { email, password } = args;
+    
             // Find the user by email
             const user = await User.findOne({ email });
+            
             if (!user) {
-              throw new Error('User not found');
+              throw new AuthenticationError('User not found');
             }
-    
-            // Validate password
-            const validPassword = await bcrypt.compare(password, user.password);
-            if (!validPassword) {
-              throw new Error('Invalid password');
-            }
-    
-            // Generate JWT token
-            const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
-              expiresIn: '1h',
-            });
-    
-            return { token };
+          
+          
+            // Generate a token
+            const token = generateToken(user);
+            
+            console.log({ token, user });
+            
+            return { token, user };
           } catch (error) {
-            throw new Error('Error logging in user');
+            console.error('Login error:', error.message);
+            console.error('User:', user);
+            throw new AuthenticationError('Error logging in user');
           }
-        },
-      },
-    };
+ 
+           }
+         },
+            
+          };
+        
+      
+    
   
 
 module.exports = resolvers;

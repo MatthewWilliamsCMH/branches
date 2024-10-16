@@ -125,6 +125,6 @@ const startApolloServer = async () => {
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     })
   });
-};
+
 
 startApolloServer();
