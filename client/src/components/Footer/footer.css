@@ -27,6 +27,11 @@
 }
 
 @media only screen and (max-width: 768px) {
+  .footer {
+    position: absolute;
+    bottom: 0;
+  }
+
   .footer-links {
     display: flex;
     flex-wrap: wrap;
