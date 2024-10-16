@@ -10,7 +10,7 @@ form {
 
 h2 {
     text-align: center;
-    color: #333;
+    color: #FFFFFF;
 }
 
 input {
@@ -22,7 +22,7 @@ input {
 }
 
 button {
-    width: 100%;
+    width: auto;
     padding: 10px;
     background-color: #4CAF50;
     color: white;
