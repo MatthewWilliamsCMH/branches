@@ -1,6 +1,4 @@
-// OLD VERSION OF FILE
 // client/src/App.jsx
-// import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql,createHttpLink } from '@apollo/client';
 import {setContext} from '@apollo/client/link/context'
 import React from 'react';
@@ -77,7 +75,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
     <Header /> 
-    <Homepage/>
+    <FamilyTree />
     <Footer /> 
     </ApolloProvider>
   );
