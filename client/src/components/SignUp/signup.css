@@ -12,6 +12,11 @@ h2 {
     text-align: center;
     color: #FFFFFF;
 }
+h3 {
+    text-align: center;
+    color: #090407;
+    font-size: 2rem;
+}
 
 input {
     width: 100%;
