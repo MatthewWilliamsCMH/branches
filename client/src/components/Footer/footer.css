@@ -27,38 +27,38 @@
 }
 
 @media only screen and (max-width: 700px) {
-    .footer {
-        position: relative;
-        padding: 15px 10px;
-    }
+  .footer {
+      position: relative;
+      padding: 15px 10px;
+  }
 
-    .footer-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+  .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+  }
 
-    .footer-link {
-        width: 48%;
-        margin: 5px;
-    }
+  .footer-link {
+      width: 48%;
+      margin: 5px;
+  }
 }
 
 @media only screen and (max-width: 000px) {
-    .footer {
-        position: relative;
-        padding: 10px 5px;
-        bottom: 0;
-    }
+  .footer {
+      position: relative;
+      padding: 10px 5px;
+      bottom: 0;
+  }
 
-    .footer-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+  .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+  }
 
-    .footer-link {
-        width: 44%;
-        margin: 5px;
-    }
+  .footer-link {
+      width: 44%;
+      margin: 5px;
+  }
 }

@@ -31,7 +31,8 @@ svg.tommy .node.female>rect {
 #tree>svg {
     /* background-color: #2E2E2E; */ /*matthew commented this out; it seemed not to be doing anything*/
     background-image: url("../../assets/optree.jpg");
-    background-size: cover;
+    background-size: 100vw;
+    background-repeat: no-repeat;
     background-position: center; 
 }
 
