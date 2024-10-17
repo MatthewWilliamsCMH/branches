@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { LOGIN_MUTATION } from '../../utils/mutations';
 import { useMutation } from '@apollo/client';
 import Auth from '../../utils/auth'
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,10 +31,10 @@ const LoginForm = () => {
        
        const token = loginResponse.data.login.token
        Auth.login(token)
+      navigate('../myTree.jsx'); 
     } catch (error) {
       setError(error.message); // Set error message if login fails
 
-      navigate('../myTree.jsx'); 
     }
   }
 
@@ -70,20 +71,20 @@ const LoginForm = () => {
     <form onSubmit={handleSubmit}>
       <h3>Login</h3>
       <input
-        type="email"
+        type='email'
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
+        placeholder='Email'
         required
       />
       <input
-        type="password"
+        type='password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
+        placeholder='Password'
         required
       />
-      <button type="submit">Login</button>
+      <button type='submit'>Login</button>
     </form>
   );
 };

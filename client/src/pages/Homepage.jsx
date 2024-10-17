@@ -16,8 +16,8 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1 style={{marginTop:"10px"}}>Welcome to Branches</h1>
-      <img src={image1} alt="Tree" style={{ width: '300px', height: 'auto' }} />
+      <h1 style={{marginTop:'10px'}}>Welcome to Branches</h1>
+      <img src={image1} alt='Tree' style={{ width: '300px', height: 'auto' }} />
       
       {/* Check if user is already authenticated */}
       {Auth.loggedIn() ? (

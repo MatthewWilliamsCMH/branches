@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
-import FamilyTree from "@balkangraph/familytree.js";
-import "./tree.css"
+import FamilyTree from '@balkangraph/familytree.js';
+import './tree.css'
 
 // Define your GraphQL query to fetch persons
 const GET_PERSONS = gql`
@@ -100,20 +100,22 @@ const Tree = () => {
         burialSite: person.burialSite,
       }));
 
+      const miniMapValue = window.innerWidth >= 780;
+
       // Initialize FamilyTree with the fetched data
       treeRef.current = new FamilyTree(divRef.current, {
         nodes: treePersons,
         mode: 'dark',
         template: 'tommy',
         nodeTreeMenu: true,
-        miniMap: true,
+        miniMap: miniMapValue,
         nodeBinding: {
           field_0: 'name',
           img_0: 'img',
         },
         editForm: {
-          titleBinding: "name",
-          photoBinding: "img",
+          titleBinding: 'name',
+          photoBinding: 'img',
           elements: [
             { type: 'textbox', label: 'Full Name', binding: 'name' },
             { type: 'textbox', label: 'Gender', binding: 'gender' },
@@ -136,7 +138,6 @@ const Tree = () => {
             },
             share: null,
             pdf: null,
-            // remove: null,
           },
         },
       });
@@ -147,7 +148,6 @@ const Tree = () => {
 
         if(args.addNodesData.length > 0) {
             const newPersonData = {
-                // updatePersonId: args.updateNodesData[0].id
               updatePersonId: args.addNodesData[0].id,
               gender: args.addNodesData[0].gender,
               fatherId: args.addNodesData[0].fid || null,
@@ -159,22 +159,21 @@ const Tree = () => {
                 const { data } = await updatePerson({
                   variables: newPersonData,
                 });
-                console.log("Person added:", data.updatePerson);
+                console.log('Person added:', data.updatePerson);
       
                 // Optionally, refresh the FamilyTree nodes after update
                 treeRef.current.load(treePersons);
               } catch (error) {
-                console.error("Error updating person:", error);
+                console.error('Error updating person:', error);
               }
         } else if (args.updateNodesData.length > 0) {
 
             const updatedPersonData = {
-                // updatePersonId: args.updateNodesData[0].id
               updatePersonId: args.updateNodesData[0].id,
-              firstName: args.updateNodesData[0].name.split(" ")[0],
-              lastName: args.updateNodesData[0].name.split(" ")[1],
+              firstName: args.updateNodesData[0].name.split(' ')[0],
+              lastName: args.updateNodesData[0].name.split(' ')[1],
               gender: args.updateNodesData[0].gender,
-              img: args.updateNodesData[0].img || "",
+              img: args.updateNodesData[0].img || '',
               fatherId: args.updateNodesData[0].fid || null,
               motherId: args.updateNodesData[0].mid || null,
               pids: args.updateNodesData[0].pids || []
@@ -185,21 +184,15 @@ const Tree = () => {
               const { data } = await updatePerson({
                 variables: updatedPersonData,
               });
-              console.log("Person updated:", data.updatePerson);
+              console.log('Person updated:', data.updatePerson);
     
               // Optionally, refresh the FamilyTree nodes after update
               treeRef.current.load(treePersons);
             } catch (error) {
-              console.error("Error updating person:", error);
+              console.error('Error updating person:', error);
             }
 
         }
-    
-
-        // UPDATING A PERSON
-
-        // Extract data from args and map them to mutation variables
-        
       });
 
       const uploadFile = async (file) => {
@@ -207,26 +200,26 @@ const Tree = () => {
         formData.append('avatar', file);
 
         try {
-          const response = await fetch("http://localhost:3001/assets", {
-            method: "POST",
+          const response = await fetch('http://localhost:3001/assets', {
+            method: 'POST',
             body: formData,
           });
 
 
           if (!response.ok) {
-            throw new Error("File upload failed");
+            throw new Error('File upload failed');
           }
 
           const data = await response.json();
           return data.fileUrl;
         }
         catch (error) {
-          console.error("Error uploading file: ", error);
+          console.error('Error uploading file: ', error);
           throw error;
         }
       }
 
-      treeRef.current.editUI.on("element-btn-click", function() {
+      treeRef.current.editUI.on('element-btn-click', function() {
         FamilyTree.fileUploadDialog(async function(file) {
           if (currentDetailsIdRef) {
             try {
@@ -239,7 +232,7 @@ const Tree = () => {
                 variables: updatedPersonData
               });
 
-              console.log ("Avatar updated: ", data.updatedPerson);
+              console.log ('Avatar updated: ', data.updatedPerson);
 
               treeRef.current.updateNode({
                 id: currentDetailsIdRef,
@@ -247,11 +240,11 @@ const Tree = () => {
               });
             }
             catch (error) {
-              console.error("Avatar update failed: ", error);
+              console.error('Avatar update failed: ', error);
             }
           }
           else {
-            console.error("Person ID not found");
+            console.error('Person ID not found');
           }
         });
       });
@@ -271,7 +264,7 @@ const Tree = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div id="tree" ref={divRef} /> //matthew moved sizing into css file
+    <div id='tree' ref={divRef} />
   );
 };
 

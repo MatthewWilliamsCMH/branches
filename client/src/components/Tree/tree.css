@@ -5,9 +5,9 @@
 }
 
 html {
-    left:0;
-    right:0;
-    margin:auto;
+    left: 0;
+    right: 0;
+    margin: auto;
     height: calc(100vh - 7rem);
     min-width: 375px;
 }
@@ -15,7 +15,7 @@ html {
 body {
     background-color: #0F0D0D; /*mattew changed from 2e2e2e to match background of tree */
     color: white;
-    text-align:center;
+    text-align: center;
 }
 
 svg.tommy .node.male>rect {
@@ -32,10 +32,10 @@ svg.tommy .node.female>rect {
 
 #tree>svg {
     /* background-color: #2E2E2E; */ /*matthew commented this out; it seemed not to be doing anything*/
-    background-image: url("../../assets/optree.jpg");
+    background-image: url('../../assets/optree.jpg');
     background-size: cover;
     background-position: center; 
-    background-repeat:no-repeat; 
+    background-repeat: no-repeat; 
 }
 
 #base_tree_menu path, #base_tree_menu ellipse {
@@ -43,15 +43,15 @@ svg.tommy .node.female>rect {
 }
 
 .bft-edit-form-fields {
-    background-color:#0F0D0D; /*matthew added */
+    background-color: #0F0D0D; /*matthew added */
 }
 
 #tree > form.female > div:nth-child(1) > div.bft-edit-form-header {
-    background-color:#86198f; /* matthew added */
+    background-color: #86198f; /* matthew added */
 }
 
 #tree > form.male > div:nth-child(1) > div.bft-edit-form-header {
-    background-color:#1e3a8a; /* matthew added */
+    background-color: #1e3a8a; /* matthew added */
 }
 
 div.bft-dark .bft-input>input{
