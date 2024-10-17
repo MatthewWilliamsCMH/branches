@@ -7,7 +7,7 @@ MIT License
 ## Description
 Branches is a full-stack application that allows the users to record genealogical data and create a tree representing a family. This is a preliminary release of the app. (See [Future Development](#future-development) for necessary and possible improvements.) An image of the a sample tree can be seen below.
 
-![image of a sample family tree in Branches](./assets/branches.jpg)
+![image of a sample family tree in Branches](./assets/Branches.jpg)
 
 ## Table of Contents
 - [Installation](#installation)
