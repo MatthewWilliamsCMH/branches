@@ -100,7 +100,7 @@ const Tree = () => {
         burialSite: person.burialSite,
       }));
 
-      const miniMapValue = window.innerWidth >= 780;
+      const windowIsWide = window.innerWidth >= 780;
 
       // Initialize FamilyTree with the fetched data
       treeRef.current = new FamilyTree(divRef.current, {
@@ -108,7 +108,8 @@ const Tree = () => {
         mode: 'dark',
         template: 'tommy',
         nodeTreeMenu: true,
-        miniMap: miniMapValue,
+        miniMap: windowIsWide,
+        enableSearch: windowIsWide,
         nodeBinding: {
           field_0: 'name',
           img_0: 'img',
