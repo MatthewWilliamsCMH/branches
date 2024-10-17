@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import {setContext} from '@apollo/client/link/context'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import React from 'react';
-
 import Header from "./components/Header/index.jsx"
 import Footer from "./components/Footer/index.jsx"
 import App from './App.jsx';
