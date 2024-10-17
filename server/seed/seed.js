@@ -8,9 +8,9 @@ async function seedDatabase() {
   await mongoose.connect('mongodb+srv://matthewwilliamscmh:dkMHT0LdTCiANuAf@branches.qprf8.mongodb.net/?retryWrites=true&w=majority&appName=Branches');
 
   const connection = mongoose.connection; // Get the connection object
-  let personsCheck = await connection.db.listCollections({ name: "people" }).toArray();
+  let personsCheck = await connection.db.listCollections({ name: 'people' }).toArray();
   	if (personsCheck.length) {
-	  	await connection.db.dropCollection("people")
+	  	await connection.db.dropCollection('people')
   };
 
 

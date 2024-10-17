@@ -3,8 +3,6 @@ const bcrypt = require('bcryptjs');
 const { signToken, AuthenticationError } = require('../utils/auth');
 const User = require('../models/User'); // Adjust the path as necessary
 
-
-
 const resolvers = {
   Query: {
     persons: async () => {
@@ -24,8 +22,6 @@ const resolvers = {
 },
 
   Mutation: {
-
-    
     createPerson: async (_, { firstName, middleName, lastName, dateOfBirth, dateOfDeath, gender, birthPlace, burialSite, img, fatherId, motherId, pids }) => {
       try {
         const newPerson = new Person({
@@ -84,55 +80,51 @@ const resolvers = {
         throw new Error('Error deleting person');
       }
     },
-        // User sign-up mutation
-        signup: async (parent,args) => {
-          console.log('here is the ARGS', args)
-          try {
-           const user =await User.create(args)
-           const token = signToken(user)
-           console.log({token,user})
-           return {token,user}
-          } catch (error) {
-            console.error(error)
-            throw AuthenticationError
 
-          }
-        },
+    // User sign-up mutation
+    signup: async (parent,args) => {
+      console.log('here is the ARGS', args)
+      try {
+        const user =await User.create(args)
+        const token = signToken(user)
+        console.log({token,user})
+        return {token,user}
+      } catch (error) {
+        console.error(error)
+        throw AuthenticationError
+      }
+    },
     
- // User login mutation
-login: async (parent, args) => {
-  let user; // Declare user variable
-  try {
-    const { email, password } = args;
+    // User login mutation
+    login: async (parent, args) => {
+      let user; // Declare user variable
+      try {
+        const { email, password } = args;
 
-    // Find the user by email
-    user = await User.findOne({ email });
-    
-    if (!user) {
-      throw new AuthenticationError('User not found');
+        // Find the user by email
+        user = await User.findOne({ email });
+      
+        if (!user) {
+          throw new AuthenticationError('User not found');
+        }
+
+        // Verify password (you may need to add this step)
+        const isPasswordCorrect = await user.matchPassword(password);
+        if (!isPasswordCorrect) {
+          throw new AuthenticationError('Incorrect password');
+        }
+      
+        // Generate a token
+        const token = user.getSignedJwtToken(user);
+        console.log({ token, user });
+        return { token, user: { _id: user._id, email: user.email, username: user.username } }; // Return sanitized user object
+      } catch (error) {
+        console.error('Login error:', error.message);
+        console.error('User:', user); // user will be undefined if the error occurs before it's defined
+        throw new AuthenticationError('Error logging in user');
+      }
     }
-
-    // Verify password (you may need to add this step)
-    const isPasswordCorrect = await user.matchPassword(password);
-    if (!isPasswordCorrect) {
-      throw new AuthenticationError('Incorrect password');
-    }
-    
-    // Generate a token
-    const token = user.getSignedJwtToken(user);
-    
-    console.log({ token, user });
-    
-    return { token, user: { _id: user._id, email: user.email, username: user.username } }; // Return sanitized user object
-  } catch (error) {
-    console.error('Login error:', error.message);
-    console.error('User:', user); // user will be undefined if the error occurs before it's defined
-    throw new AuthenticationError('Error logging in user');
-  
-}
-}
-
-}
+  }
 };
 
 module.exports = resolvers;
