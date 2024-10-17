@@ -3,19 +3,23 @@
   color: white;
   text-align: center;
   padding: 20px;
-  position: fixed; /*matthew changed to fixed so it stays on the page */
+  position: relative; 
   bottom: 0;
   width: 100%;
 }
 
 .footer-links {
   margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .footer-link {
   color: #61dafb;
   margin: 0 10px;
   text-decoration: none;
+ 
 }
 
 .footer-link:hover {
@@ -26,39 +30,17 @@
   font-size: 14px;
 }
 
-@media only screen and (max-width: 700px) {
+@media (min-height: 1000px) {
   .footer {
-      position: relative;
+      position: fixed;
       padding: 15px 10px;
   }
-
   .footer-links {
+    margin-bottom: 10px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
   }
-
-  .footer-link {
-      width: 48%;
-      margin: 5px;
-  }
-}
-
-@media only screen and (max-width: 000px) {
-  .footer {
-      position: relative;
-      padding: 10px 5px;
-      bottom: 0;
-  }
-
-  .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-  }
-
-  .footer-link {
-      width: 44%;
-      margin: 5px;
-  }
+  
+  
 }
