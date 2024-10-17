@@ -29,13 +29,14 @@ svg.tommy .node.female>rect {
 #tree {
     height: calc(100vh - 12rem); /*matthew made this adjustment so the save button and mini map are always above the footer */
 }
+
 #tree>svg {
     /* background-color: #2E2E2E; */ /*matthew commented this out; it seemed not to be doing anything*/
     background-image: url("../../assets/optree.jpg");
     background-size: cover;
     background-position: center; 
     background-repeat:no-repeat; 
-
+}
 
 
 #base_tree_menu path, #base_tree_menu ellipse {
