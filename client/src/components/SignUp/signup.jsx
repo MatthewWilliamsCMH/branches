@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 import Auth from '../../utils/auth'
 import {Navigate} from 'react-router-dom'
 import './signup.css'
+
 const SignupForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,26 +24,20 @@ const SignupForm = () => {
     }
 
     try {
-     const signUpResponse = await signUp({
-      variables:{
-        name:name,
-        email:email,
-        password:password
-      }
-     })
+      const signUpResponse = await signUp({
+        variables:{
+          name:name,
+          email:email,
+          password:password
+        }
+      })
      
-     const token = signUpResponse.data.signup.token
-     Auth.login(token)
+      const token = signUpResponse.data.signup.token
+      Auth.login(token)
 
-     setTimeout(()=>{
-      Navigate('/Tree')
-     }, 2000)
-
-     
-
-
-
-
+      setTimeout(()=>{
+        Navigate('/Tree')
+      }, 2000)
     } catch (error) {
       console.log(error)
       setError(error.message); // Set error message if sign-up fails
@@ -56,27 +51,27 @@ const SignupForm = () => {
       {message && <p style={{ color: 'green' }}>{message}</p>} {/* Display success message */}
       
       <input
-        type="text"
+        type='text'
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
+        placeholder='Name'
         required
       />
       <input
-        type="email"
+        type='email'
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
+        placeholder='Email'
         required
       />
       <input
-        type="password"
+        type='password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
+        placeholder='Password'
         required
       />
-      <button type="submit">Sign Up</button>
+      <button type='submit'>Sign Up</button>
     </form>
   );
 };

@@ -44,9 +44,10 @@ p {
     text-align: center;
     font-weight: bold;
 }
+
 body{
-    background-image: url("../../assets/optree.jpg");
+    background-image: url('../../assets/optree.jpg');
     background-size: contain;
     background-position: center; 
-    background-repeat:no-repeat; 
+    background-repeat: no-repeat; 
 }
