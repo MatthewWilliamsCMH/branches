@@ -29,6 +29,11 @@ In your browser, navigate to [https://branches-bv83.onrender.com/](https://branc
 
 If you have a large tree, it can be easy to get lost, so you will see in the lower left a miniature map of your entire tree and the section of the tree that you're looking at. You can also search for a person in the tree using the search box in the upper right.
 
+A sample tree from Branches.
+
+![image branches sample tree](./public/branches.jpg)
+
+
 ## Future Development
 - The Balkan Family Tree JS library has some limitations—primarily cost and poor documentation—so we would like eventually to build our own interface.
 - We would like to make the app more inclusive to allow users to build different kinds of families. Right now, for example, partners are limited to male-female relationships.
