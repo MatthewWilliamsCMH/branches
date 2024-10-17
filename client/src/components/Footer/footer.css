@@ -3,7 +3,7 @@
   color: white;
   text-align: center;
   padding: 20px;
-  position: fixed; /*matthew changed to fixed so it stays on the page */
+  position: absolute; /*matthew changed to fixed so it stays on the page */
   bottom: 0;
   width: 100%;
 }
