@@ -11,6 +11,7 @@ html {
     height: calc(100vh - 7rem);
     min-width: 375px;
 }
+
 body {
     background-color: #0F0D0D; /*mattew changed from 2e2e2e to match background of tree */
     color: white;
