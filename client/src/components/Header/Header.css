@@ -21,7 +21,19 @@
     font-size: 24px; 
     font-weight: bold; 
 }
+.signout-btn {
+    background-color: #0d32a6; 
+    color: white;              
+    border: none;              
+    padding: 10px 20px;        
+    border-radius: 5px;        
+    cursor: pointer;          
+    transition: background-color 0.3s ease; 
+}
 
+.signout-btn:hover {
+    background-color: #960da6; 
+}
 @media (max-width: 768px) {
     .header {
         flex-direction: column; /* Stack items on smaller screens */

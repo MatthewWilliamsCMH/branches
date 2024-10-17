@@ -29,7 +29,7 @@ input {
 button {
     width: auto;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #0d32a6;
     color: white;
     border: none;
     border-radius: 5px;
@@ -46,4 +46,7 @@ p {
 }
 body{
     background-image: url("../../assets/optree.jpg");
+    background-size: contain;
+    background-position: center; 
+    background-repeat:no-repeat; 
 }

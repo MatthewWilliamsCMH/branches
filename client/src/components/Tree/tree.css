@@ -33,6 +33,7 @@ svg.tommy .node.female>rect {
     background-image: url("../../assets/optree.jpg");
     background-size: cover;
     background-position: center; 
+    background-repeat:no-repeat; 
 }
 
 #base_tree_menu path, #base_tree_menu ellipse {
