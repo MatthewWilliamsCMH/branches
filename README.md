@@ -5,9 +5,7 @@
 MIT License
 
 ## Description
-Branches is a full-stack application that allows the users to record genealogical data and create a tree representing a family. This is a preliminary release of the app. (See [Future Development](#future-development) for necessary and possible improvements.) An image of the a sample tree can be seen below.
-
-![image of a sample family tree in Branches](./assets/Branches.jpg)
+Branches is a full-stack application that allows the users to record genealogical data and create a tree representing a family. This is a preliminary release of the app. (See [Future Development](#future-development) for necessary and possible improvements.)
 
 ## Table of Contents
 - [Installation](#installation)
@@ -29,9 +27,9 @@ In your browser, navigate to [https://branches-bv83.onrender.com/](https://branc
 
 If you have a large tree, it can be easy to get lost, so you will see in the lower left a miniature map of your entire tree and the section of the tree that you're looking at. You can also search for a person in the tree using the search box in the upper right.
 
-A sample tree from Branches.
+Here's a sample tree from Branches.
 
-![image branches sample tree](./public/branches.jpg)
+![image of a sample family tree in Branches](./assets/Branches.jpg)
 
 
 ## Future Development
