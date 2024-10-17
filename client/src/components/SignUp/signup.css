@@ -46,4 +46,7 @@ p {
 }
 body{
     background-image: url("../../assets/optree.jpg");
+    background-size: 100vw;
+    background-repeat: no-repeat;
+    background-position: center; 
 }
