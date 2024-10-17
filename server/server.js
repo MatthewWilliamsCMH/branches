@@ -6,21 +6,17 @@ const path = require('path')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-// const cors = require('cors');
-
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const User = require('./models/User'); // Adjust path as per your structure
-// require('dotenv').config();
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-// app.use(cors());
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "public/assets/"))
+    cb(null, path.join(__dirname, 'public/assets/'))
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname))
@@ -69,7 +65,7 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-    app.post("/assets", upload.single("avatar"), function (req, res, next) {
+    app.post('/assets', upload.single('avatar'), function (req, res, next) {
     res.json({ fileUrl: `/assets/${req.file.filename}` });
   });
 
@@ -95,7 +91,7 @@ const startApolloServer = async () => {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '2h' });
+      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: 7200 });
 
       // Send the token back to the client
       res.json({ token });
@@ -112,7 +108,6 @@ const startApolloServer = async () => {
 
 
   // if we're in production, serve client/dist as static assets
-  // if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
     app.get('*', (req, res) => {
