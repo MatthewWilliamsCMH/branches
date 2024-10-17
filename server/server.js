@@ -11,7 +11,7 @@ const bcrypt = require('bcryptjs');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const User = require('./models/User'); // Adjust path as per your structure
-// require('dotenv').config();
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -95,7 +95,7 @@ const startApolloServer = async () => {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '2h' });
+      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: 7200 });
 
       // Send the token back to the client
       res.json({ token });

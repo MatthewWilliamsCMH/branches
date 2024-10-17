@@ -113,13 +113,13 @@ login: async (parent, args) => {
     }
 
     // Verify password (you may need to add this step)
-    const isPasswordCorrect = await user.isCorrectPassword(password);
+    const isPasswordCorrect = await user.matchPassword(password);
     if (!isPasswordCorrect) {
       throw new AuthenticationError('Incorrect password');
     }
     
     // Generate a token
-    const token = generateToken(user);
+    const token = user.getSignedJwtToken(user);
     
     console.log({ token, user });
     
