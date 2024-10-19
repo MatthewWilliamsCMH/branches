@@ -109,6 +109,7 @@ const Tree = () => {
         template: 'tommy',
         nodeTreeMenu: true,
         miniMap: windowIsWide,
+        enableTouch: true,
         enableSearch: windowIsWide,
         nodeBinding: {
           field_0: 'name',
