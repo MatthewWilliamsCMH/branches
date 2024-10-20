@@ -4,7 +4,7 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "seed": "node config/seedDB.js",
+        "seed": "node config/seedDB.js && node seed/seed.js",
         "watch": "nodemon server.js"
     },
     "author": "",
