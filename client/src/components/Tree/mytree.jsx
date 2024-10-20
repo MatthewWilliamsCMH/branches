@@ -202,7 +202,8 @@ const Tree = () => {
         formData.append('avatar', file);
 
         try {
-          const response = await fetch('http://localhost:3001/assets', {
+          // const response = await fetch('http://localhost:3001/assets', {
+          const response = await fetch('/assets', {
             method: 'POST',
             body: formData,
           });
