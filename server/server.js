@@ -12,7 +12,8 @@ const db = require('./config/connection');
 const User = require('./models/User'); // Adjust path as per your structure
 require('dotenv').config();
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 10000;
+// const PORT = process.env.PORT || 3001;
 const app = express();
 app.use(cors());
 
