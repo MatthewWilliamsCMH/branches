@@ -109,7 +109,7 @@ const Tree = () => {
         template: 'tommy',
         nodeTreeMenu: true,
         miniMap: windowIsWide,
-        enableTouch: true,
+        // enableTouch: true,
         enableSearch: windowIsWide,
         nodeBinding: {
           field_0: 'name',
@@ -237,10 +237,10 @@ const Tree = () => {
 
               console.log ('Avatar updated: ', data.updatedPerson);
 
-              treeRef.current.updateNode({
-                id: currentDetailsIdRef,
-                img: fileUrl
-              });
+              // treeRef.current.updateNode({
+              //   id: currentDetailsIdRef,
+              //   img: fileUrl
+              // });
             }
             catch (error) {
               console.error('Avatar update failed: ', error);

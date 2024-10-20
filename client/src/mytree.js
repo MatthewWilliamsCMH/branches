@@ -13,7 +13,7 @@ export default class Tree extends Component {
     }
 
     componentDidMount() {
-        this.family = new FamilyTree (this.divRef.current , {
+        this.family = new FamilyTree (this.divRef.current, {
             nodes: this.props.nodes,
 
             nodeBinding: {
