@@ -9,8 +9,7 @@ import Footer from '../src/components/Footer/index';
 import Homepage from '../src/pages/Homepage'
 
 const httpLink= createHttpLink ({
-  uri:'/graphql'
-})
+  uri: process.env.NODE_ENV === 'production' ? 'https://branches-bv83.onrender.com/graphql' : 'http://localhost:3001/graphql',})
 
 const authLink = setContext((_,{headers}) => {
   const token = localStorage.getItem('id_token')
@@ -23,7 +22,8 @@ const authLink = setContext((_,{headers}) => {
 })
 
 const client=new ApolloClient({
-  link:authLink.concat(httpLink),
+  link: httpLink,
+  // link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 })
 
