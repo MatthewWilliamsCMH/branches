@@ -1,7 +1,7 @@
-const Person = require('../models/Person'); // Adjust the path as necessary
+const Person = require('../models/Person');
+const User = require('../models/User'); // Adjust the path as necessary
 const bcrypt = require('bcryptjs');
 const { signToken, AuthenticationError } = require('../utils/auth');
-const User = require('../models/User'); // Adjust the path as necessary
 
 const resolvers = {
   Query: {

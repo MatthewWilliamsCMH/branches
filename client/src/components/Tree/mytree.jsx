@@ -23,6 +23,48 @@ const GET_PERSONS = gql`
   }
 `;
 
+// Define your GraphQL mutation to create a person
+const CREATE_PERSON = gql`
+  mutation CreatePerson(
+    $firstName: String!
+    $lastName: String!
+    $gender: String!
+    $fatherId: String
+    $motherId: String
+    $dateOfBirth: String
+    $dateOfDeath: String
+    $birthPlace: String
+    $burialSite: String
+    $img: String
+  ) {
+    createPerson(
+      firstName: $firstName,
+      lastName: $lastName,
+      gender: $gender,
+      fatherId: $fatherId,
+      motherId: $motherId,
+      dateOfBirth: $dateOfBirth,
+      dateOfDeath: $dateOfDeath,
+      birthPlace: $birthPlace,
+      burialSite: $burialSite,
+      img: $img
+    ) {
+      id
+      firstName
+      lastName
+      dateOfBirth
+      dateOfDeath
+      gender
+      birthPlace
+      burialSite
+      img
+      fatherId
+      motherId
+      pids
+    }
+  }
+`;
+
 // Define the GraphQL mutation to update a person
 const UPDATE_PERSON = gql`
   mutation Mutation(
@@ -76,8 +118,9 @@ const Tree = () => {
   const treeRef = useRef(null);
 
   // Fetch the data from your GraphQL server
-  const { loading, error, data } = useQuery(GET_PERSONS);
+  const { loading, error, data, refetch } = useQuery(GET_PERSONS);
   const [updatePerson] = useMutation(UPDATE_PERSON);
+  const [createPerson] = useMutation(CREATE_PERSON);
 
   useEffect(() => {
     if (!loading && !error && data) {
@@ -109,7 +152,6 @@ const Tree = () => {
         template: 'tommy',
         nodeTreeMenu: true,
         miniMap: windowIsWide,
-        // enableTouch: true,
         enableSearch: windowIsWide,
         nodeBinding: {
           field_0: 'name',
@@ -149,51 +191,106 @@ const Tree = () => {
         console.log(args);
 
         if(args.addNodesData.length > 0) {
-            const newPersonData = {
-              updatePersonId: args.addNodesData[0].id,
-              gender: args.addNodesData[0].gender,
-              fatherId: args.addNodesData[0].fid || null,
-              motherId: args.addNodesData[0].mid || null,
-              pids: args.addNodesData[0].pids || [],
-            };
+          const newPersonData = {
+            updatePersonId: args.addNodesData[0].id,
+            firstName: args.addNodesData[0].name.split(' ')[0],
+            lastName: args.addNodesData[0].name.split(' ')[1],
+            gender: args.addNodesData[0].gender,
+            fatherId: args.addNodesData[0].fid || null,
+            motherId: args.addNodesData[0].mid || null,
+            pids: args.addNodesData[0].pids || [],
+          };
 
-            try {
-                const { data } = await updatePerson({
-                  variables: newPersonData,
-                });
-                console.log('Person added:', data.updatePerson);
-      
-                // Optionally, refresh the FamilyTree nodes after update
-                treeRef.current.load(treePersons);
-              } catch (error) {
-                console.error('Error updating person:', error);
-              }
-        } else if (args.updateNodesData.length > 0) {
+          try {
+            const { data: newPerson } = await createPerson({
+              variables: newPersonData,
+            });
 
-            const updatedPersonData = {
-              updatePersonId: args.updateNodesData[0].id,
-              firstName: args.updateNodesData[0].name.split(' ')[0],
-              lastName: args.updateNodesData[0].name.split(' ')[1],
-              gender: args.updateNodesData[0].gender,
-              img: args.updateNodesData[0].img || '',
-              fatherId: args.updateNodesData[0].fid || null,
-              motherId: args.updateNodesData[0].mid || null,
-              pids: args.updateNodesData[0].pids || []
-            };
+            console.log('New person added:', newPerson.createPerson);
+
+            // Now update firstPartner's document
+            const firstPersonId = args.addNodesData[0].id; // Assuming this is Elaine's ID
+            console.log(args.addNodesData[0].firstName)
+            const updatedPids = [
+              ...(data.persons.find(person => person.id === firstPersonId)?.pids || []),
+              newPerson.createPerson.id,
+            ];
+
+            await updatePerson({
+              variables: {
+                updatePersonId: firstPersonId,
+                pids: updatedPids,
+              },
+            });
+
+
+
+
+
+
+
+
+            // Refresh the FamilyTree nodes after the mutation
+            const { data } = await refetch(); // Refetch updated data
+            const updatedTreePersons = data.persons.map(person => ({
+              id: person.id,
+              pids: person.pids,
+              fid: person.fatherId || null,
+              mid: person.motherId || null,
+              name: `${person.firstName} ${person.lastName}`,
+              gender: person.gender.toLowerCase(),
+              img: person.img || '',
+              dateOfBirth: person.dateOfBirth,
+              birthPlace: person.birthPlace,
+              dateOfDeath: person.dateOfDeath,
+              burialSite: person.burialSite,
+            }));
+
+          treeRef.current.load(updatedTreePersons);
+          } 
+          catch (error) {
+            console.error('Error creating person:', error);
+          }
+        }
+        else if (args.updateNodesData.length > 0) {
+          const updatedPersonData = {
+            updatePersonId: args.updateNodesData[0].id,
+            firstName: args.updateNodesData[0].name.split(' ')[0],
+            lastName: args.updateNodesData[0].name.split(' ')[1],
+            gender: args.updateNodesData[0].gender,
+            img: args.updateNodesData[0].img || '',
+            fatherId: args.updateNodesData[0].fid || null,
+            motherId: args.updateNodesData[0].mid || null,
+            pids: args.updateNodesData[0].pids || []
+          };
     
-            // Call the mutation to update the person
-            try {
-              const { data } = await updatePerson({
-                variables: updatedPersonData,
-              });
-              console.log('Person updated:', data.updatePerson);
-    
-              // Optionally, refresh the FamilyTree nodes after update
-              treeRef.current.load(treePersons);
-            } catch (error) {
-              console.error('Error updating person:', error);
-            }
-
+          // Call the mutation to update the person
+          try {
+            const { data } = await updatePerson({
+              variables: updatedPersonData,
+            });
+            console.log('Person updated:', data.updatePerson);
+  
+            // Optionally, refresh the FamilyTree nodes after update
+            const { data: refreshedData } = await refetch(); // Refetch updated data
+            const refreshedTreePersons = refreshedData.persons.map(person => ({
+              id: person.id,
+              pids: person.pids,
+              fid: person.fatherId || null,
+              mid: person.motherId || null,
+              name: `${person.firstName} ${person.lastName}`,
+              gender: person.gender.toLowerCase(),
+              img: person.img || '',
+              dateOfBirth: person.dateOfBirth,
+              birthPlace: person.birthPlace,
+              dateOfDeath: person.dateOfDeath,
+              burialSite: person.burialSite,
+            }));
+            treeRef.current.load(refreshedTreePersons);
+          } 
+          catch (error) {
+            console.error('Error updating person:', error);
+          }
         }
       });
 
@@ -260,8 +357,7 @@ const Tree = () => {
         currentDetailsIdRef = sender.node.id; // Update local variable
       });
     }
-  }, [loading, error, data, updatePerson]);
-
+  }, [loading, error, data, createPerson, updatePerson, refetch]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;

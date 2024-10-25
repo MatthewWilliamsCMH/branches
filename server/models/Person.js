@@ -4,19 +4,18 @@ const Schema = mongoose.Schema;
 
 const PersonSchema = new Schema({
   id: { type: String, required: true, unique: true },
-  firstName: { type: String, required: true },
-  middleName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  dateOfBirth: { type: Date, required: true },
+  firstName: { type: String },
+  middleName: { type: String },
+  lastName: { type: String },
+  dateOfBirth: { type: Date },
   dateOfDeath: { type: Date },
   gender: { type: String, required: true },
-  birthPlace: { type: String, required: true },
+  birthPlace: { type: String },
   burialSite: { type: String },
   img: { type: String },
   motherId: { type: String },
   fatherId: { type: String },
   pids: [{ type: String }],
-  children: [{ type: String }],
 }, {
   timestamps: true
 });

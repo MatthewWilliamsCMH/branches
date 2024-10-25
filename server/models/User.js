@@ -6,8 +6,7 @@ const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     email: {
         type: String,
@@ -21,12 +20,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 8, // Increase minimum length to 8
+        minlength: 8,
         match: [
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
             'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character'
         ]
-    },   
+    }
 });
 
 // Hash the password before saving
@@ -34,7 +33,6 @@ userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         next();
     }
-
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
 });
@@ -46,8 +44,9 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 // Generate JWT token
 userSchema.methods.getSignedJwtToken = function () {
-    return jwt.sign({ id: this._id }, 'mysecretssshhhhhhh', { //hardcoded because of render error
-        expiresIn: 7200 //hardcoded because of render error
+    // The next two lines temporarily replace the subsequent two lines to avoid a Render error
+    return jwt.sign({ id: this._id }, 'mysecretssshhhhhhh', {
+        expiresIn: 7200
     // return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         // expiresIn: process.env.JWT_EXPIRE
     });

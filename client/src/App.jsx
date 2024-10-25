@@ -1,33 +1,33 @@
 // client/src/App.jsx
-import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql,createHttpLink } from '@apollo/client';
-import {setContext} from '@apollo/client/link/context'
-import { Outlet } from 'react-router-dom';
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
+// USEQUERY AND GQL ARE NOT USED IN THIS FILE
+// import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql,createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context'
 import React from 'react';
-import FamilyTree from './components/Tree/mytree';
+import { Outlet } from 'react-router-dom';
+// import Homepage from '../src/pages/Homepage'; ISN'T USED IN THIS FILE
 import Header from '../src/components/Header/index';
+// import FamilyTree from './components/Tree/mytree'; ISN'T USED IN THIS FILE
 import Footer from '../src/components/Footer/index';
-import Homepage from '../src/pages/Homepage'
 
-const httpLink= createHttpLink ({
-  uri: process.env.NODE_ENV === 'production' ? 'https://branches-bv83.onrender.com/graphql' : 'http://localhost:3001/graphql',})
+const httpLink = createHttpLink ({
+  uri: process.env.NODE_ENV === 'production' ? 'https://branches-bv83.onrender.com/graphql' : 'http://localhost:3001/graphql'
+});
 
-const authLink = setContext((_,{headers}) => {
+const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token')
   return {
     headers: {
       ...headers,
-      authorization:token ? `bearer ${token}`: '',
+      authorization: token ? `Bearer ${token}`: '',
     }
-  }
-})
-
-const client=new ApolloClient({
-  link: httpLink,
-  // link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-})
+  };
+});
 
 function App() {
+  // useEffect(() => {
+  //   client.resetStore(); // Clears the cache when the app initializes
+  // }, [client]);
   return (
     <ApolloProvider client={client}>
         <Header /> 
@@ -35,6 +35,6 @@ function App() {
         <Footer /> 
     </ApolloProvider>
   );
-}
+};
 
 export default App;
