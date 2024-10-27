@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PersonSchema = new Schema({
-  id: { type: String, required: true, unique: true },
   firstName: { type: String },
   middleName: { type: String },
   lastName: { type: String },

@@ -12,9 +12,9 @@ const resolvers = {
         throw new Error('Error fetching persons');
       }
     },
-    person: async (_, { id }) => {
+    person: async (_, { _id }) => {
       try {
-        return await Person.findById(id); // Fetch a specific person by ID
+        return await Person.findById(_id); // Fetch a specific person by ID
       } catch (error) {
         throw new Error('Error fetching person');
       }
@@ -46,10 +46,10 @@ const resolvers = {
       }
     },
 
-    updatePerson: async (_, { id, firstName, middleName, lastName, dateOfBirth, dateOfDeath, gender, birthPlace, burialSite, img, fatherId, motherId, pids }) => {
+    updatePerson: async (_, { _id, firstName, middleName, lastName, dateOfBirth, dateOfDeath, gender, birthPlace, burialSite, img, fatherId, motherId, pids }) => {
       try {
       const updatedPerson = await Person.findOneAndUpdate(
-          {id: id},
+          { _id },
           {
             firstName,
             middleName,
@@ -64,7 +64,7 @@ const resolvers = {
             motherId,
             pids,
           },
-          { new: true, upsert: true } // Return the updated document
+          { new: true } // Return the updated document
         );
         return updatedPerson; // Return the updated person
       } catch (error) {
@@ -72,9 +72,9 @@ const resolvers = {
       }
     },
 
-    deletePerson: async (_, { id }) => {
+    deletePerson: async (_, { _id }) => {
       try {
-        const deletedPerson = await Person.findByIdAndDelete(id); // Delete the person by ID
+        const deletedPerson = await Person.findByIdAndDelete(_id); // Delete the person by ID
         return deletedPerson; // Return the deleted person
       } catch (error) {
         throw new Error('Error deleting person');

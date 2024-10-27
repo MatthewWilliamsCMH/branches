@@ -7,7 +7,7 @@ import './tree.css'
 const GET_PERSONS = gql`
   query GetPersons {
     persons {
-      id
+      _id
       firstName
       lastName
       dateOfBirth
@@ -26,8 +26,8 @@ const GET_PERSONS = gql`
 // Define your GraphQL mutation to create a person
 const CREATE_PERSON = gql`
   mutation CreatePerson(
-    $firstName: String!
-    $lastName: String!
+    $firstName: String
+    $lastName: String
     $gender: String!
     $fatherId: String
     $motherId: String
@@ -67,8 +67,8 @@ const CREATE_PERSON = gql`
 
 // Define the GraphQL mutation to update a person
 const UPDATE_PERSON = gql`
-  mutation Mutation(
-    $updatePersonId: String
+  mutation UpdatePerson (
+    $_id: String!
     $firstName: String
     $middleName: String
     $lastName: String
@@ -83,7 +83,7 @@ const UPDATE_PERSON = gql`
     $pids: [String]
   ) {
     updatePerson(
-      id: $updatePersonId
+      id: $_id
       firstName: $firstName
       middleName: $middleName
       lastName: $lastName
@@ -126,7 +126,7 @@ const Tree = () => {
     if (!loading && !error && data) {
       // Map the data to the format expected by the FamilyTree component
       const treePersons = data.persons.map((person) => ({
-        id: person.id,
+        id: String(person._id),
         pids: person.pids,
         fid: person.fatherId || null,
         mid: person.motherId || null,
@@ -181,59 +181,54 @@ const Tree = () => {
               hideIfDetailsMode: false,
             },
             share: null,
-            pdf: null,
-          },
-        },
+            pdf: null
+          }
+        }
       });
 
       treeRef.current.onUpdateNode(async (args) => {
         console.log('+++++ Updated node! ++++');
         console.log(args);
 
+
         if(args.addNodesData.length > 0) {
+          const personData = args.addNodesData[0];
           const newPersonData = {
-            updatePersonId: args.addNodesData[0].id,
-            firstName: args.addNodesData[0].name.split(' ')[0],
-            lastName: args.addNodesData[0].name.split(' ')[1],
-            gender: args.addNodesData[0].gender,
-            fatherId: args.addNodesData[0].fid || null,
-            motherId: args.addNodesData[0].mid || null,
-            pids: args.addNodesData[0].pids || [],
+            _id: personData.id,
+            firstName: personData.name.split(' ')[0] || null,
+            lastName: personData.name.split(' ')[1] || null,
+            gender: personData.gender,
+            fatherId: personData.fid || null,
+            motherId: personData.mid || null,
+            pids: personData.pids || [],
           };
 
           try {
             const { data: newPerson } = await createPerson({
-              variables: newPersonData,
+              variables: newPersonData
             });
 
             console.log('New person added:', newPerson.createPerson);
 
             // Now update firstPartner's document
-            const firstPersonId = args.addNodesData[0].id; // Assuming this is Elaine's ID
-            console.log(args.addNodesData[0].firstName)
-            const updatedPids = [
-              ...(data.persons.find(person => person.id === firstPersonId)?.pids || []),
-              newPerson.createPerson.id,
+            const updatePids = [
+              ...(data.persons.find(person => person.id === personData.id)?.pids || []),
+              newPerson.createPerson.id
             ];
-
+            
             await updatePerson({
               variables: {
-                updatePersonId: firstPersonId,
-                pids: updatedPids,
-              },
+                _id: personData.id,
+                pids: updatePids
+              }
             });
 
 
 
-
-
-
-
-
             // Refresh the FamilyTree nodes after the mutation
-            const { data } = await refetch(); // Refetch updated data
-            const updatedTreePersons = data.persons.map(person => ({
-              id: person.id,
+            const { data: refetchedData } = await refetch(); // Refetch updated data
+            const updatedTreePersons = refetchedData.persons.map(person => ({
+              id: person._id,
               pids: person.pids,
               fid: person.fatherId || null,
               mid: person.motherId || null,
@@ -254,9 +249,9 @@ const Tree = () => {
         }
         else if (args.updateNodesData.length > 0) {
           const updatedPersonData = {
-            updatePersonId: args.updateNodesData[0].id,
-            firstName: args.updateNodesData[0].name.split(' ')[0],
-            lastName: args.updateNodesData[0].name.split(' ')[1],
+            _id: args.updateNodesData[0].id,
+            firstName: args.updateNodesData[0].name.split(' ')[0] || null,
+            lastName: args.updateNodesData[0].name.split(' ')[1] || null,
             gender: args.updateNodesData[0].gender,
             img: args.updateNodesData[0].img || '',
             fatherId: args.updateNodesData[0].fid || null,
@@ -267,7 +262,7 @@ const Tree = () => {
           // Call the mutation to update the person
           try {
             const { data } = await updatePerson({
-              variables: updatedPersonData,
+              variables: updatedPersonData
             });
             console.log('Person updated:', data.updatePerson);
   
